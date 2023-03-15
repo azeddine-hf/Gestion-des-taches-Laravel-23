@@ -4,7 +4,7 @@
     @section('content')
 
     <main class="main-content">
-        <div class="contents">
+        <div class="contents expanded">
             <div class="container-fluid">
                 <div class="social-dash-wrap">
                     <div class="row">
@@ -2298,6 +2298,6 @@
             </div>
         </span>
     </div>
-    <div class="overlay-dark-sidebar"></div>
+    <div class="overlay-dark-sidebar show"></div>
     @endsection
 

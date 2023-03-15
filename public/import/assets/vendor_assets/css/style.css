@@ -3,6 +3,28 @@ Company Name: Tech Digital
 Author: Azeddine Hissouf
 Version: 1.1.0
 */
+.circle-icon-warning:hover{
+background:#fff8ee;
+transition: all 0.5s ease-out ;
+}
+.circle-icon-danger:hover{
+    background:#fff4f4;
+    transition: all 0.5s ease-out ;
+}
+.circle-icon-warning {
+    background: #ffedd2;
+    border-radius: 50%;
+    padding: 10px;
+    display: flex;
+}
+.circle-icon-danger {
+    background: #ffe2e2;
+    border-radius: 50%;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 .m-top-0 {
   margin-top: 0px;
 }

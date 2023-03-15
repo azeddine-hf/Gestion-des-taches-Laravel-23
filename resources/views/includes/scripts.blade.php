@@ -47,4 +47,4 @@
     <script src="{{ asset('import/assets/vendor_assets/js/form-validation.init.js')}}"></script>
     <script src="{{ asset('import/assets/vendor_assets/js/fontawesome.init.js')}}"></script>
     <script src="{{ asset('import/assets/vendor_assets/js/toast.script.js')}}"></script>
-    
+    <script src="{{ asset('import/assets/vendor_assets/js/paginaseach.js')}}"></script>

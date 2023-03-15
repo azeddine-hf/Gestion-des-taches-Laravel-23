@@ -123,7 +123,7 @@
                     <div class="col-lg-12">
                         <div class="card mt-30">
                             <div class="card-body">
-                                <div class="userDatatable adv-table-table global-shadow border-0 bg-white w-100 adv-table">
+                                <div class="userDatatable global-shadow border-0 bg-white w-100">
                                     <div class="table-responsive">
                                         @if (session('msg'))
                                             <div class="adv-table-table__header">
@@ -133,10 +133,27 @@
                                                 </div>
                                             </div>
                                         @endif
-                                        <div id="filter-form-container"></div>
-                                        <table class="table mb-0 table-borderless adv-table" data-sorting="true"
-                                            data-filter-container="#filter-form-container" data-paging-current="1"
-                                            data-paging-position="right" data-paging-size="5">
+                                        <div id="filter-form-container">
+                                            <div class="row mb-2">
+                                                <div class="col-8">
+                                                    <!-- selct for searching-->
+                                                    <select class  ="form-control" name="state" id="maxRows">
+                                                        <option value="10">10</option>
+                                                        <option value="15">15</option>
+                                                        <option value="20">20</option>
+                                                        <option value="50">50</option>
+                                                        <option value="70">70</option>
+                                                        <option value="100">100</option>
+                                                        <option value="5000">Afficher TOUTES les lignes</option>
+                                                    </select>
+                                                </div>
+                                                <!-- search input-->
+                                                <div class="tb_search col-md-4">
+                                                    <input type="text" id="search_input_all"  placeholder="Rechercher.." class="form-control w-100">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <table class="table table-class" id="table-id">
                                             <thead>
                                                 <tr class="userDatatable-header">
                                                     <th></th>
@@ -148,83 +165,38 @@
                                                         <span class="userDatatable-title">Prénom</span>
                                                     </th>
                                                     <th>
-                                                        <span class="userDatatable-title">email</span>
+                                                        <span class="userDatatable-title">Email</span>
                                                     </th>
                                                     <th>
-                                                        <span class="userDatatable-title">position</span>
+                                                        <span class="userDatatable-title">Position</span>
                                                     </th>
                                                     <th>
-                                                        <span class="userDatatable-title">date de naissance</span>
+                                                        <span class="userDatatable-title">Date de naissance</span>
                                                     </th>
                                                     <th>
                                                         <span class="userDatatable-title">Téléphone</span>
                                                     </th>
                                                     <th>
-                                                        <span class="userDatatable-title float-right">action</span>
+                                                        <span class="userDatatable-title">Action</span>
                                                     </th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach ($user as $item)
-                                                    <tr>
-
-                                                        <td>
-                                                            <div class="userDatatable-content">
-                                                                <a href="#"
-                                                                    class="profile-image rounded-circle d-block m-0 wh-38"
-                                                                    style="background-image:url({{ asset('/import/profileImg/' . $item->profile) }}); background-size: cover;"></a>
-                                                            </div>
-                                                        </td>
-                                                        <td class="d-none">
-                                                            <p>{{ $item->id }}</p>
-                                                        </td>
-                                                        <td>
-                                                            <div class="userDatatable-content">{{ $item->nom }}</div>
-                                                        </td>
-                                                        <td>
-                                                            <div class="userDatatable-content">{{ $item->prenom }}</div>
-                                                        </td>
-                                                        <td>
-                                                            <div class="userDatatable-content">{{ $item->email }}</div>
-                                                        </td>
-                                                        <td>
-                                                            <div class="userDatatable-content">
-                                                                <div class="userDatatable-content">
-                                                                    {{ __($item->jobTitle) }}</div>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <div class="userDatatable-content">
-                                                                <div class="userDatatable-content">
-                                                                    {{ $item->dateNaissance }}</div>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <div class="userDatatable-content">{{ $item->telephone }}
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <ul class="orderDatatable_actions mb-0 d-flex flex-wrap">
-                                                                <li>
-                                                                    <button type="button" value="{{ $item->id }}"
-                                                                        class="btn editbtn21 edit"><span
-                                                                            data-feather="edit"
-                                                                            class="text-warning"></span></button>
-                                                                </li>
-                                                                <li>
-                                                                    <button type="button" value="{{ $item->id }}"
-                                                                        class="btn deletebtn remove"><span
-                                                                            data-feather="trash-2"
-                                                                            class="text-danger"></span></button>
-                                                                </li>
-                                                            </ul>
-                                                        </td>
-                                                    </tr>
-                                                @endforeach
 
                                             </tbody>
                                         </table>
+                                        
                                     </div>
+                                    <!--		Start Pagination -->
+                                        
+                                    <div class="pagination-container justify-content-center row mt-2">
+                                        <nav>
+                                        <ul class="pagination pagination-sm">
+                                        <!--	code pagination  -->
+                                        </ul>
+                                        </nav>
+                                    </div>
+                                     {{-- <div class="rows_count">Showing 11 to 20 of 91 entries</div> --}}
                                 </div>
                             </div>
                         </div>
@@ -354,19 +326,79 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
-        //*select users
-        // function selectUsers(){
-        //     $.ajax({
-        //             type: "GET",
-        //             url: "/show_members",
-        //             dataType: "json",
-        //             success: function(response) {
-        //                 $.each(response.all_members, function(key, items) {
 
-        //                 }
-        //             }
-        //     });
-        // }
+        //*select users
+        selectUsers();
+        function selectUsers(){
+            $.ajax({
+                    type: "GET",
+                    url: "/show_members",
+                    dataType: "json",
+                    success: function(response) {
+                        $('tbody').html("");
+                        $.each(response.all_members, function(key, items) {
+                            $('tbody').append(`
+                            <tr>
+                                                        <td>
+                                                            <div class="userDatatable-content">
+                                                                <a href="#"
+                                                                    class="profile-image rounded-circle d-block m-0 wh-38"
+                                                                    style="background-image:url('/import/profileImg/`+items.profile+`'); background-size: cover;"></a>
+                                                            </div>
+                                                        </td>
+                                                        <td class="d-none">
+                                                            <p></p>
+                                                        </td>
+                                                        <td>
+                                                            <div class="userDatatable-content">`+items.nom+`</div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="userDatatable-content">`+items.prenom+`</div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="userDatatable-content">`+items.email+`</div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="userDatatable-content">
+                                                                <div class="userDatatable-content">
+                                                                    `+items.jobTitle+`</div>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="userDatatable-content">
+                                                                <div class="userDatatable-content">
+                                                                    `+items.dateNaissance+`</div>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="userDatatable-content">
+                                                                `+items.telephone+`
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <ul class="list-group list-group-horizontal-sm">
+                                                                <li>
+                                                                    <button type="button" value="`+items.id+`"
+                                                                        class="btn editbtn21 edit">
+                                                                        <i class="fa fa-pen text-warning circle-icon-warning"></i>
+                                                                        </button>
+                                                                </li>
+                                                                <li>
+                                                                    <button type="button" value="`+items.id+`"
+                                                                        class="btn deletebtn remove">
+                                                                        <i class="fa fa-trash text-danger circle-icon-danger"></i>
+                                                                        </button>
+                                                                </li>
+                                                            </ul>
+                                                        </td>
+                                                    </tr>
+                            `);
+                        });
+
+                    }
+                    
+            });
+        }
         //*to add data
             $(document).on('submit', '#ajout_user', function(e) {
                 e.preventDefault();
@@ -397,6 +429,8 @@
                             $('#ajout_user').find('input').val('');
                             document.getElementById('this_li').remove();
                             $('#new-member').modal('hide');
+                            selectUsers();
+                            dataTableonload();
                             $.Toast("Message!", response.message, "success", {
                                         has_icon:true,
                                         has_close_btn:true,
@@ -415,9 +449,8 @@
                     }
                 });
             });
-        });
 
-        //to edit data
+//to edit data
         // $(document).ready(function() {
 
         //     $(document).on('click', '.editbtn21', function() {
@@ -447,5 +480,10 @@
         //         });
         //     });
         // });
+    
+        //! this script for DataTable
+        
+        });
+        
     </script>
 @endsection
