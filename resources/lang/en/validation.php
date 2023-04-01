@@ -143,6 +143,7 @@ return [
     */
 
     'custom' => [
+        //! users validation
         'nom' => [
             'required' => 'vous devez insérer le nom',
             'min' =>'le  nom doit avoir au moins :min caractéres',
@@ -183,19 +184,62 @@ return [
             'required' => 'vous devez insérer le numero de téléphone',
             'digits' => 'le téléphone  ne doit pas dépasser :digits caractéres',
             'regex' => 'Exemple 0644444444 ou 0744444444',
-
-
-
         ],
         'profile' => [
             'required' => 'vous devez choisi une photo de profile',
             'mimes' => 'La photo de profile doit être un fichier de type: :values.',
             'uploaded' => 'La taille totale des fichiers téléchargés ne doit pas dépasser 2mb',
             'max' => 'The total uploaded files size should not exceed :max kilobytes.',
-
-
+        ],
+        //! Client validation
+        'nom_c' => [
+            'required' => 'vous devez insérer le nom',
+            'min' =>'le  titre doit avoir au moins :min caractéres',
+            'max' => 'le titre ne doit pas dépasser :max caractéres',
 
         ],
+        'company' => [
+            'required' => 'vous devez insérer le nom de l\'entreprise',
+            'min' =>'le  titre doit avoir au moins :min caractéres',
+            'max' => 'le titre ne doit pas dépasser :max caractéres',
+
+        ],
+        'tel_c' => [
+            'required' => 'vous devez insérer le numero de téléphone',
+            'digits' => 'le téléphone  ne doit pas dépasser :digits caractéres',
+            'regex' => 'Exemple 0644444444 ou 0744444444',
+        ],
+        'email_c' => [
+            'required' => 'vous devez insérer l\'email du client',
+            'email' => 'l\'email doit être un email valide exemple@domain.com',
+
+        ],
+        'logo' => [
+            'required' => 'vous devez choisi un logo',
+            'mimes' => 'Le logo doit être un fichier de type: :values.',
+            'uploaded' => 'La taille totale des fichiers téléchargés ne doit pas dépasser 2mb',
+            'max' => 'The total uploaded files size should not exceed :max kilobytes.',
+        ],
+        //! project validation
+        'nom_p' => [
+            'required' => 'vous devez insérer le titre du Projet',
+            'min' =>'le  titre doit avoir au moins :min caractéres',
+            'max' => 'le titre ne doit pas dépasser :max caractéres',
+
+        ],
+        'start_date' => [
+            'required' => 'vous devez insérer la date de début du Projet',
+
+        ],
+        'clients' => [
+            'required' => 'vous devez choisi un client',
+
+        ],
+        'project_status' => [
+            'required' => 'vous devez choisi status du projet',
+
+        ],
+        
     ],
 
     /*

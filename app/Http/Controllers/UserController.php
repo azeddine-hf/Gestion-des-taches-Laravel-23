@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\File;
 
 class UserController extends Controller
 {
@@ -91,9 +92,22 @@ class UserController extends Controller
      */
     public function showsmember()
     {
-        $user = User::all('id','nom','prenom','email','jobTitle','telephone','profile','dateNaissance');
+        $user = User::where('is_deleted', '=', '0')
+            ->get(['id as idu', 'nom as nameu', 'prenom as lastnam', 'email as mail', 'jobTitle as poost', 'telephone as teel', 'profile as imgu', 'dateNaissance as daten']);
+            $userCount = User::where('is_deleted', 0)->count();
+            $admins = User::where('is_deleted', 0)
+                               ->where('isAdmin', 1)
+                               ->count();
+            $usersc = User::where('is_deleted', 0)
+                            ->where('isAdmin', 0)
+                            ->count();
+
         return response()->json([
             'all_members' => $user,
+            'counts' => $userCount,
+            'admins' => $admins,
+            'userss' => $usersc,
+
         ]);
     }
 
@@ -103,9 +117,9 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($id2)
     {
-        $user = User::find($id);
+        $user = User::find($id2);
         if($user){
           return response()->json([
             'status'=>200,
@@ -127,32 +141,69 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
-        $user_id = $request->input('user_id');
-        $user = User::find($user_id);
-        $user->nom = $request->input('nom');
-        $user->prenom = $request->input('prenom');
-        $user->email = $request->input('email');
-        $user->jobTitle = $request->input('post');
-        $user->telephone = $request->input('tel');
-        $user->dateNaissance = $request->input('dateness');
-        if($request->has('pass')) {
-            $user->password = Hash::make($request->input('pass'));
-        }else{
-            $user->password = Hash::make($user->password);
+        $isValid = Validator::make($request->all(), [
+            'nom' =>'required|max:60|min:2',
+            'prenom' =>'required|max:60|min:2',
+            'tel' => [
+                'nullable',
+                'digits:10',
+                'regex:#^(?:(?:(?:\+|00)212[\s]?(?:[\s]?\(0\)[\s]?)?)|0){1}(?:7[\s.-]?[2-3]|6[\s.-]?[13-9]){1}[0-9]{1}(?:[\s.-]?\d{2}){3}$#'
+            ],
+            'post' =>'required|max:60|min:2',
+            'email' =>'required|email',
+            'dateness' =>'required|date',
+        ]);
+        if($isValid->fails()){
+            return response()->json([
+                'status'=>400,
+                'errors'=>$isValid->messages(),
+            ]);
         }
-        if($request->hasFile('profile1')){
-            $file = $request->file('profile1');
-            $extention = $file->getClientOriginalExtension();
-            $filename = time().'.'.$extention ;
-            $file->storeAs('import/profileImg/', $filename);
-            $user->profile = $filename;
-        }else{
-            $user->profile =$user->profile;
-        }
-        $user->update();
-        return redirect()->back()->with('msg','Utilisateur mis à jour avec succès !');    }
+        else{
+            $user = User::find($id);
+            if($user)
+            {
+                $user->nom = $request->input('nom');
+                $user->prenom = $request->input('prenom');
+                $user->email = $request->input('email');
+                $user->jobTitle = $request->input('post');
+                $user->telephone = $request->input('tel');
+                $user->dateNaissance = $request->input('dateness');
+                    if($request->has('pass')) {
+                        $user->password = Hash::make($request->input('pass'));
+                    }else{
+                        $user->password = Hash::make($user->password);
+                    }
+                    if($request->hasFile('profile2')){
+                    //  $path = 'import/profileImg/'.$user->profile;
+                        // if(File::exists($path)){
+                        //     File::update($path);
+                        // }
+                    $file = $request->file('profile2');
+                    $extention = $file->getClientOriginalExtension();
+                    $filename = time().'.'.$extention;
+                    $file->move('import/profileImg/', $filename);
+                    $user->profile = $filename;
+                }
+                $user->save();
+                return response()->json([
+                    'status'=>200,
+                    'message'=>'L\'utilisateur a été modifié avec succés !'
+                ]);
+            }
+            else{
+                return response()->json([
+                    'status'=>404,
+                    'message'=>'L\'utilisateur non trouvé !'
+                ]);
+            }
+
+
+    }//end else isinvalid
+
+       }
 
     /**
      * Remove the specified resource from storage.
@@ -162,6 +213,22 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+                $user = User::find($id);
+                if($user)
+                {
+                    $user->is_deleted = 1;
+                    $user->save();
+                    return response()->json([
+                        'status'=>200,
+                        'message'=>'L\'utilisateur a été Supprimer avec succés !'
+                    ]);
+                }
+                else{
+                    return response()->json([
+                        'status'=>404,
+                        'message'=>'L\'utilisateur non trouvé !'
+                    ]);
+                }
     }
+
 }

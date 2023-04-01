@@ -579,6 +579,7 @@ resetButton.addEventListener('click', removeLiTag);
 function removeLiTag() {
     const liTag = document.getElementById('this_li'); // replace 'your-li-id' with the actual ID of the <li> tag you want to remove
     liTag.remove();
+
   }
 
 
@@ -1476,11 +1477,15 @@ function removeLiTag() {
   });
 
   /* Preloader */
-  $(window).on('load', function () {
+$(window).on('load', function () {
     $(".loader-overlay").delay(500).fadeOut("slow");
     $("#overlayer").fadeOut(500, function () {
       $('body').removeClass('overlayScroll');
     });
   })
 
+  
 })(jQuery);
+
+
+// end date script

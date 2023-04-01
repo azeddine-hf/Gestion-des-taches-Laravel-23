@@ -5,13 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Project extends Model
+class Client extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'startDate',
-        'endDate',
-        'title',
+        'nom_client',
+        'company',
+        'email',
+        'telephone',
         'status',
     ];
 }

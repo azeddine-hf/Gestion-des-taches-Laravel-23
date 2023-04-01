@@ -15,16 +15,18 @@ class CreateProjectsTable extends Migration
     {
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
+            $table->integer('client_id');
             $table->date('startDate')->nullable();
             $table->date('endDate')->nullable();
             $table->string('title');
             $table->string('status')->nullable();
             $table->integer('isDeleted')->default(0);
-            // $table->string('jobTitle')->nullable();
-            // $table->string('profile')->default('user.jpg');
-            // $table->string('telephone')->nullable();
             $table->rememberToken();
             $table->timestamps();
+            $table->foreign('client_id')
+              ->references('id')
+              ->on('clients')
+              ->onDelete('cascade');
         });
     }
 
