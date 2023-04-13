@@ -380,6 +380,7 @@
 
 @endsection
 @section('script')
+<script src="{{ asset('import/assets/vendor_assets/js/paginaseach.js')}}"></script>
     <script>
         //!jquery crf
         $(document).ready(function() {

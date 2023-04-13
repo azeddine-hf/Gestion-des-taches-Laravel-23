@@ -223,7 +223,7 @@
                             <div class="nav-author__options">
                                 <ul>
                                     <li>
-                                        <a href="">
+                                        <a class="{{ Request::is('profile')?'active':''}}" href="{{url('profile')}}">
                                             <span data-feather="user"></span> Profile</a>
                                     </li>
                                     <li>

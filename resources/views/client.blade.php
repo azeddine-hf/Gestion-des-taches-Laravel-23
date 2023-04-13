@@ -21,7 +21,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <!-- end col--> 
+                                <!-- end col-->
                                 <div class="col-md-6 col-xl-4 mt-3">
                                     <div class="card" style="border-radius: 20px;">
                                         <div class="card-body">
@@ -35,7 +35,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <!-- end col--> 
+                                <!-- end col-->
                                 <div class="col-md-6 col-xl-4 mt-3">
                                     <div class="card" style="border-radius: 20px;">
                                         <div class="card-body">
@@ -49,8 +49,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <!-- end col--> 
-                                                           
+                                <!-- end col-->
+
                     </div>
                 </div>
             </div>
@@ -355,6 +355,7 @@
 <div class="overlay-dark-sidebar show"></div>
 @endsection
 @section('script')
+<script src="{{ asset('import/assets/vendor_assets/js/paginaseach.js')}}"></script>
 <script>
     //!jquery crf
     $(document).ready(function() {
@@ -363,7 +364,7 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
-        
+
         //*select users
         selectClient();
         function selectClient(){
@@ -401,7 +402,7 @@
                                                         <td>
                                                             <div class="userDatatable-content">
                                                                 <div class="userDatatable-content">
-                                                                    `+items.tel+`</div>
+                                                                    `+(jQuery.trim(items.tel) ? items.tel : 'Aucun Numéro')+`</div>
                                                             </div>
                                                         </td>
                                                         <td>
@@ -572,7 +573,7 @@
          }
             });
         });
-    
+
  //to delete data and affected data to input id
     $(document).on('click', '.deletebtn21', function() {
                 var user_id = $(this).val();

@@ -10,7 +10,7 @@
                     <span>Main menu</span>
                 </li>
                 <li class="has-child {{ Request::is('/')?'open':''}}">
-                    <a href="#" class="{{ Request::is('/')?'active':''}}">
+                    <a href="{{url('/')}}" class="{{ Request::is('/')?'active':''}}">
                         <span data-feather="home" class="nav-icon"></span>
                         <span class="menu-text">Accueil</span>
                         <span class="toggle-icon"></span>
@@ -24,7 +24,7 @@
                 </li>
                 @if (Auth::user()->isAdmin ===1)
                 <li class="has-child ">
-                    <a href="#" class="{{ Request::is('equipe')?'active':''}}">
+                    <a href="{{url('equipe')}}" class="{{ Request::is('equipe')?'active':''}}">
                         <span data-feather="users" class="nav-icon"></span>
                         <span class="menu-text">Equipe list</span>
                         <span class="toggle-icon"></span>
@@ -38,12 +38,12 @@
                 </li>
                 @endif
                 <li class="has-child ">
-                    <a href="#" class="{{ Request::is('client')?'active':''}}">
+                    <a href="{{url('client')}}" class="{{ Request::is('client')?'active':''}}">
                         <span data-feather="award" class="nav-icon"></span>
                         <span class="menu-text">Les Clients</span>
                         <span class="toggle-icon"></span>
                     </a>
-                    <ul style="display: none; top: 189px; left: 67px;   ">
+                    <ul style="display: none; top: 180px; left: 67px;   ">
                         <li>
                             <a class="{{ Request::is('client')?'active':''}}" href="{{url('client')}}">Les Clients</a>
                         </li>
@@ -51,12 +51,12 @@
                     </ul>
                 </li>
                 <li class="has-child ">
-                    <a href="#" class="{{ Request::is('projet')?'active':''}}">
+                    <a href="{{url('projet')}}" class="{{ Request::is('projet')?'active':''}}">
                         <span data-feather="package" class="nav-icon"></span>
                         <span class="menu-text">Les Projets</span>
                         <span class="toggle-icon"></span>
                     </a>
-                    <ul style="display: none; top: 173px; left: 67px;   ">
+                    <ul style="display: none; top: 220px; left: 67px;   ">
                         <li>
                             <a class="{{ Request::is('projet')?'active':''}}" href="{{url('projet')}}">Les Projets</a>
                         </li>
@@ -64,14 +64,27 @@
                     </ul>
                 </li>
                 <li class="has-child ">
-                    <a href="#" class="{{ Request::is('taches')?'active':''}}">
+                    <a href="{{url('taches')}}" class="{{ Request::is('taches')?'active':''}}">
                         <span data-feather="target" class="nav-icon"></span>
                         <span class="menu-text">Les Tȃches</span>
                         <span class="toggle-icon"></span>
                     </a>
-                    <ul style="display: none; top: 173px; left: 67px;   ">
+                    <ul style="display: none; top: 263px; left: 67px;   ">
                         <li>
                             <a class="{{ Request::is('taches')?'active':''}}" href="{{url('taches')}}">Les Tȃches</a>
+                        </li>
+
+                    </ul>
+                </li>
+                <li class="has-child ">
+                    <a  class="{{ Request::is('recycle')?'active':''}}" href="{{ url('recycle') }}">
+                        <span data-feather="trash-2" class="nav-icon"></span>
+                        <span class="menu-text">Corbeille</span>
+                        <span class="toggle-icon"></span>
+                    </a>
+                    <ul style="display: none; top: 263px; left: 67px;   ">
+                        <li>
+                            <a class="{{ Request::is('recycle')?'active':''}}" href="{{url('recycle')}}">Corbeille</a>
                         </li>
 
                     </ul>

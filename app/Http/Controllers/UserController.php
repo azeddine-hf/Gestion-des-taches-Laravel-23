@@ -110,7 +110,15 @@ class UserController extends Controller
 
         ]);
     }
+    public function showsmember_deleted()
+    {
+        $user = User::where('is_deleted', '=', '1')
+            ->get(['id as idu', 'nom as nameu', 'prenom as lastnam', 'email as mail', 'jobTitle as poost', 'telephone as teel', 'profile as imgu', 'dateNaissance as daten']);
+            return response()->json([
+            'all_members' => $user,
 
+        ]);
+    }
     /**
      * Show the form for editing the specified resource.
      *
@@ -229,6 +237,48 @@ class UserController extends Controller
                         'message'=>'L\'utilisateur non trouvé !'
                     ]);
                 }
+    }
+    public function destroy_recycle($id)
+    {
+                $user = User::find($id);
+                if($user)
+                {
+                    $user->is_deleted = 0;
+                    $user->save();
+                    return response()->json([
+                        'status'=>200,
+                        'message'=>'L\'utilisateur a été restaurer avec succés !'
+                    ]);
+                }
+                else{
+                    return response()->json([
+                        'status'=>404,
+                        'message'=>'L\'utilisateur non trouvé !'
+                    ]);
+                }
+    }
+    public function destroy_ever($id_ever)
+    {
+        $user = User::find($id_ever);
+        if($user){
+            $path = 'import/profileImg/'.$user->profile;
+            if(File::exists($path)){
+                File::delete($path);
+            }
+            $user->delete();
+            return response()->json([
+                'status'=> 200,
+                'message' => 'L\'utilisateur a été Supprimer avec succés !',
+            ]);
+        }
+
+        else
+        {
+            return response()->json([
+                'status' => 404,
+                'message'=> 'L\'utilisateur non trouvé !',
+            ]);
+        }
     }
 
 }

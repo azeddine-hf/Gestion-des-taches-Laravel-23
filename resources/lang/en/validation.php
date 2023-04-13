@@ -193,7 +193,7 @@ return [
         ],
         //! Client validation
         'nom_c' => [
-            'required' => 'vous devez insérer le nom',
+            'required' => 'vous devez insérer le nom du client',
             'min' =>'le  titre doit avoir au moins :min caractéres',
             'max' => 'le titre ne doit pas dépasser :max caractéres',
 
@@ -239,7 +239,36 @@ return [
             'required' => 'vous devez choisi status du projet',
 
         ],
-        
+        //! Tasks validation
+        'desc_tsk' => [
+            'required' => 'vous devez insérer le description de la Tȃche',
+            'min' =>'le  description doit avoir au moins :min caractéres',
+            'max' => 'le description  ne doit pas dépasser :max caractéres',
+
+        ],
+        'user_tsk' => [
+            'required' => 'vous devez sélectionner un utilisateur concerné',
+
+        ],
+        'project_tsk' => [
+            'required' => 'vous devez sélectionner le projet concerné',
+
+        ],
+        'startdate_task' => [
+            'required' => 'vous devez insérer la date de début du la Tȃches ',
+
+        ],
+        'task_status' => [
+            'required' => 'vous devez sélectionner un status de cette Tȃches ',
+
+        ],
+        'task_import' => [
+            'required' => 'vous devez sélectionner l\'importance de cette Tȃches ',
+
+        ],
+
+
+
     ],
 
     /*

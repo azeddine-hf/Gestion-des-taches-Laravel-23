@@ -231,7 +231,7 @@
                                 <div class="form-row">
                                     <div class="d-flex align-items-center justify-content-center col-12 mb-3"><span class="text-danger" data-feather="x-circle" width="90" height="90"></span></div>
                                     <h1 class="text-danger col-12 text-center mb-4">vous êtes sûr</h1>
-                                    <p class="text-light col-12 text-center" style="font-size: 19px;">Êtes-vous prêt à supprimer définitivement cette client ? </p>
+                                    <p class="text-light col-12 text-center" style="font-size: 19px;">Êtes-vous prêt à supprimer définitivement cette projet ? </p>
                                     <!--inputs-->
                                     <div class="form-group mb-20 col-md-12">
                                         <input type="hidden" class="form-control" id="id_projdel">
@@ -344,6 +344,7 @@
 <div class="overlay-dark-sidebar show"></div>
 @endsection
 @section('script')
+<script src="{{ asset('import/assets/vendor_assets/js/paginaseach.js')}}"></script>
 <script>
     //!jquery crf
 $(document).ready(function() {

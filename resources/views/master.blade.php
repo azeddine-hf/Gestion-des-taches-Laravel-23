@@ -13,7 +13,10 @@
     @include('includes.bare-left')
 
     @yield('content')
-
+            {{--! this is button recycle Bin--}}
+            <a href="{{url('recycle')}}" class="float">
+                     <i class="las la-trash-restore my-float"></i>
+            </a>
 @include('includes.scripts')
 @yield('script')
 @include('includes.footer')

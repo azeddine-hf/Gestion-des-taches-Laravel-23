@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Client;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 
 
@@ -98,6 +99,16 @@ class ClientController extends Controller
 
         ]);
     }
+    public function showsclient_deleted()
+    {
+        $client = Client::where('is_deleted', '=', '1')
+            ->get(['id as id_client', 'nom_client as namec', 'company as entrep', 'email as mail', 'telephone as tel', 'status as etat', 'logo as img',]);
+
+        return response()->json([
+            'all_clients' => $client,
+
+        ]);
+    }
 
     /**
      * Show the form for editing the specified resource.
@@ -156,10 +167,6 @@ class ClientController extends Controller
                  $client->email = $request->input('email_c');
                  $client->telephone = $request->input('tel_c');
                     if($request->hasFile('logo')){
-                    //  $path = 'import/profileImg/'.$client->profile;
-                        // if(File::exists($path)){
-                        //     File::update($path);
-                        // }
                     $file = $request->file('logo');
                     $extention = $file->getClientOriginalExtension();
                     $filename = time().'.'.$extention;
@@ -192,11 +199,11 @@ class ClientController extends Controller
      */
     public function destroy($id)
     {
-        $user = Client::find($id);
-        if($user)
+        $client = Client::find($id);
+        if($client)
         {
-            $user->is_deleted = 1;
-            $user->save();
+            $client->is_deleted = 1;
+            $client->save();
             return response()->json([
                 'status'=>200,
                 'message'=>'Le client a été Supprimer avec succés !'
@@ -206,6 +213,48 @@ class ClientController extends Controller
             return response()->json([
                 'status'=>404,
                 'message'=>'Le client non trouvé !'
+            ]);
+        }
+    }
+    public function destroy_recycle_client($id)
+    {
+        $client = Client::find($id);
+        if($client)
+        {
+            $client->is_deleted = 0;
+            $client->save();
+            return response()->json([
+                'status'=>200,
+                'message'=>'Le client a été restaurer avec succés !'
+            ]);
+        }
+        else{
+            return response()->json([
+                'status'=>404,
+                'message'=>'Le client non trouvé !'
+            ]);
+        }
+    }
+    public function destroy_fever($id_ever)
+    {
+        $client = Client::find($id_ever);
+        if($client){
+            $path = 'import/logoClient/'.$client->logo;
+            if(File::exists($path)){
+                File::delete($path);
+            }
+            $client->delete();
+            return response()->json([
+                'status'=> 200,
+                'message' => 'Le client a été Supprimer avec succés !',
+            ]);
+        }
+
+        else
+        {
+            return response()->json([
+                'status' => 404,
+                'message'=> 'Client non trouvé !',
             ]);
         }
     }
