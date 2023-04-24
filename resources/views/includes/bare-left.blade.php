@@ -77,6 +77,19 @@
                     </ul>
                 </li>
                 <li class="has-child ">
+                    <a  class="{{ Request::is('chat')?'active':''}}" href="{{ url('chat') }}">
+                        <span data-feather="message-circle" class="nav-icon"></span>
+                        <span class="menu-text">Chat</span>
+                        <span class="toggle-icon"></span>
+                    </a>
+                    <ul style="display: none; top: 263px; left: 67px;   ">
+                        <li>
+                            <a class="{{ Request::is('chat')?'active':''}}" href="{{url('chat')}}">Chat</a>
+                        </li>
+
+                    </ul>
+                </li>
+                <li class="has-child ">
                     <a  class="{{ Request::is('recycle')?'active':''}}" href="{{ url('recycle') }}">
                         <span data-feather="trash-2" class="nav-icon"></span>
                         <span class="menu-text">Corbeille</span>
@@ -89,6 +102,7 @@
 
                     </ul>
                 </li>
+
 
             </ul>
         </div>
