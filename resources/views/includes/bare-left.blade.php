@@ -38,6 +38,19 @@
                 </li>
                 @endif
                 <li class="has-child ">
+                    <a href="{{url('mes-taches')}}" class="{{ Request::is('mes-taches')?'active':''}}">
+                        <span data-feather="check-circle" class="nav-icon"></span>
+                        <span class="menu-text">Mes tâches</span>
+                        <span class="toggle-icon"></span>
+                    </a>
+                    <ul style="display: none; top: 180px; left: 67px;   ">
+                        <li>
+                            <a class="{{ Request::is('mes-taches')?'active':''}}" href="{{url('mes-taches')}}">Mes tâches</a>
+                        </li>
+
+                    </ul>
+                </li>
+                <li class="has-child ">
                     <a href="{{url('client')}}" class="{{ Request::is('client')?'active':''}}">
                         <span data-feather="award" class="nav-icon"></span>
                         <span class="menu-text">Les Clients</span>

@@ -5,7 +5,9 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\TasksController;
+use App\Http\Controllers\MyTasksController;
 use App\Http\Controllers\RecycleController;
+use App\Http\Controllers\NotificationController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth ;
 
@@ -85,6 +87,15 @@ Route::get('/taches', [TasksController::class,'index']);
 Route::get('/tasks', function () {
     return redirect('/taches');
 });
+//! routs for My tasks
+Route::get('/mes-taches', [MyTasksController::class,'index']);
+Route::get('/show_wait_tasks', [MyTasksController::class,'showwaiting'])->name('waiting_tasks');
+Route::get('/show_done_tasks', [MyTasksController::class,'showdones'])->name('done_tasks');
+Route::post('/update_tasks', [MyTasksController::class, 'updateTasks2']);
+
+//notification routes
+Route::get('/notifications/unseen-messages', [NotificationController::class, 'getUnseenMessages']);
+
 
 
 });

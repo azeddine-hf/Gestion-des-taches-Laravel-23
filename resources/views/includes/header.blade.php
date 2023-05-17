@@ -15,7 +15,7 @@
             <a href="" class="sidebar-toggle">
                 <img class="svg" src="{{asset('import/img/svg/bars.svg')}}" alt="img"></a>
             <a class="navbar-brand" href="#"><img src="{{asset('import/img/logotech.png')}}" alt="img"></a>
-            
+
         </div>
         <!-- ends: navbar-left -->
 
@@ -33,172 +33,29 @@
                 </li>
                 <li class="nav-message">
                     <div class="dropdown-custom">
-                        <a href="javascript:;" class="nav-item-toggle">
+                        <a href="javascript:;" class="{{ $newMessageCount > 0 ? 'nav-item-toggle' : '' }}">
                             <span data-feather="mail"></span></a>
                         <div class="dropdown-wrapper">
-                            <h2 class="dropdown-wrapper__title">Messages <span class="badge-circle badge-success ml-1">2</span></h2>
-                            <ul>
-                                <li class="author-online has-new-message">
-                                    <div class="user-avater">
-                                        <img src="{{asset('import/img/team-1.png')}}" alt="">
-                                    </div>
-                                    <div class="user-message">
-                                        <p>
-                                            <a href="" class="subject stretched-link text-truncate" style="max-width: 180px;">Web Design</a>
-                                            <span class="time-posted">3 hrs ago</span>
-                                        </p>
-                                        <p>
-                                            <span class="desc text-truncate" style="max-width: 215px;">Lorem ipsum
-                                                dolor amet cosec Lorem ipsum</span>
-                                            <span class="msg-count badge-circle badge-success badge-sm">1</span>
-                                        </p>
-                                    </div>
-                                </li>
-                                <li class="author-offline has-new-message">
-                                    <div class="user-avater">
-                                        <img src="{{asset('import/img/team-1.png')}}" alt="">
-                                    </div>
-                                    <div class="user-message">
-                                        <p>
-                                            <a href="" class="subject stretched-link text-truncate" style="max-width: 180px;">Web Design</a>
-                                            <span class="time-posted">3 hrs ago</span>
-                                        </p>
-                                        <p>
-                                            <span class="desc text-truncate" style="max-width: 215px;">Lorem ipsum
-                                                dolor amet cosec Lorem ipsum</span>
-                                            <span class="msg-count badge-circle badge-success badge-sm">1</span>
-                                        </p>
-                                    </div>
-                                </li>
-                                <li class="author-online has-new-message">
-                                    <div class="user-avater">
-                                        <img src="{{asset('import/img/team-1.png')}}" alt="">
-                                    </div>
-                                    <div class="user-message">
-                                        <p>
-                                            <a href="" class="subject stretched-link text-truncate" style="max-width: 180px;">Web Design</a>
-                                            <span class="time-posted">3 hrs ago</span>
-                                        </p>
-                                        <p>
-                                            <span class="desc text-truncate" style="max-width: 215px;">Lorem ipsum
-                                                dolor amet cosec Lorem ipsum</span>
-                                            <span class="msg-count badge-circle badge-success badge-sm">1</span>
-                                        </p>
-                                    </div>
-                                </li>
-                                <li class="author-offline">
-                                    <div class="user-avater">
-                                        <img src="{{asset('import/img/team-1.png')}}" alt="">
-                                    </div>
-                                    <div class="user-message">
-                                        <p>
-                                            <a href="" class="subject stretched-link text-truncate" style="max-width: 180px;">Web Design</a>
-                                            <span class="time-posted">3 hrs ago</span>
-                                        </p>
-                                        <p>
-                                            <span class="desc text-truncate" style="max-width: 215px;">Lorem ipsum
-                                                dolor amet cosec Lorem ipsum</span>
-                                        </p>
-                                    </div>
-                                </li>
-                                <li class="author-offline">
-                                    <div class="user-avater">
-                                        <img src="{{asset('import/img/team-1.png')}}" alt="">
-                                    </div>
-                                    <div class="user-message">
-                                        <p>
-                                            <a href="" class="subject stretched-link text-truncate" style="max-width: 180px;">Web Design</a>
-                                            <span class="time-posted">3 hrs ago</span>
-                                        </p>
-                                        <p>
-                                            <span class="desc text-truncate" style="max-width: 215px;">Lorem ipsum
-                                                dolor amet cosec Lorem ipsum</span>
-                                        </p>
-                                    </div>
-                                </li>
+                            <h2 class="dropdown-wrapper__title">Messages <span class="badge-circle badge-success ml-1 unseen-messages-count">0</span></h2>
+                            {{--unseen messages--}}
+                            <ul class="notifications-list">
+
                             </ul>
-                            <a href="" class="dropdown-wrapper__more">See All Message</a>
+                            <a href="{{url('chat')}}" class="dropdown-wrapper__more">Voir tous les messages</a>
                         </div>
                     </div>
                 </li>
                 <!-- ends: nav-message -->
-                <li class="nav-notification">
+                <li class="">
                     <div class="dropdown-custom">
                         <a href="javascript:;" class="nav-item-toggle">
-                            <span data-feather="bell"></span></a>
+                            <span data-feather="bell"></span>
+                            <span class="badge badge-danger badge-sm "></span>
+                        </a>
                         <div class="dropdown-wrapper">
-                            <h2 class="dropdown-wrapper__title">Notifications <span class="badge-circle badge-warning ml-1">4</span></h2>
-                            <ul>
-                                <li class="nav-notification__single nav-notification__single--unread d-flex flex-wrap">
-                                    <div class="nav-notification__type nav-notification__type--primary">
-                                        <span data-feather="inbox"></span>
-                                    </div>
-                                    <div class="nav-notification__details">
-                                        <p>
-                                            <a href="" class="subject stretched-link text-truncate" style="max-width: 180px;">James</a>
-                                            <span>sent you a message</span>
-                                        </p>
-                                        <p>
-                                            <span class="time-posted">5 hours ago</span>
-                                        </p>
-                                    </div>
-                                </li>
-                                <li class="nav-notification__single nav-notification__single--unread d-flex flex-wrap">
-                                    <div class="nav-notification__type nav-notification__type--secondary">
-                                        <span data-feather="upload"></span>
-                                    </div>
-                                    <div class="nav-notification__details">
-                                        <p>
-                                            <a href="" class="subject stretched-link text-truncate" style="max-width: 180px;">James</a>
-                                            <span>sent you a message</span>
-                                        </p>
-                                        <p>
-                                            <span class="time-posted">5 hours ago</span>
-                                        </p>
-                                    </div>
-                                </li>
-                                <li class="nav-notification__single nav-notification__single--unread d-flex flex-wrap">
-                                    <div class="nav-notification__type nav-notification__type--success">
-                                        <span data-feather="log-in"></span>
-                                    </div>
-                                    <div class="nav-notification__details">
-                                        <p>
-                                            <a href="" class="subject stretched-link text-truncate" style="max-width: 180px;">James</a>
-                                            <span>sent you a message</span>
-                                        </p>
-                                        <p>
-                                            <span class="time-posted">5 hours ago</span>
-                                        </p>
-                                    </div>
-                                </li>
-                                <li class="nav-notification__single nav-notification__single d-flex flex-wrap">
-                                    <div class="nav-notification__type nav-notification__type--info">
-                                        <span data-feather="at-sign"></span>
-                                    </div>
-                                    <div class="nav-notification__details">
-                                        <p>
-                                            <a href="" class="subject stretched-link text-truncate" style="max-width: 180px;">James</a>
-                                            <span>sent you a message</span>
-                                        </p>
-                                        <p>
-                                            <span class="time-posted">5 hours ago</span>
-                                        </p>
-                                    </div>
-                                </li>
-                                <li class="nav-notification__single nav-notification__single d-flex flex-wrap">
-                                    <div class="nav-notification__type nav-notification__type--danger">
-                                        <span data-feather="heart"></span>
-                                    </div>
-                                    <div class="nav-notification__details">
-                                        <p>
-                                            <a href="" class="subject stretched-link text-truncate" style="max-width: 180px;">James</a>
-                                            <span>sent you a message</span>
-                                        </p>
-                                        <p>
-                                            <span class="time-posted">5 hours ago</span>
-                                        </p>
-                                    </div>
-                                </li>
+                            <h2 class="dropdown-wrapper__title">Notifications</h2>
+                            <ul class="tasks-list">
+                                <!-- AJAX data will be inserted here -->
                             </ul>
                             <a href="" class="dropdown-wrapper__more">See all incoming activity</a>
                         </div>
@@ -209,11 +66,15 @@
                 <h6>{{Auth::user()->nom .' '. Auth::user()->prenom }} </h6>
                 <li class="nav-author">
                     <div class="dropdown-custom">
-                        <a href="javascript:;" class="nav-item-toggle"><img src="{{ asset('/import/profileImg/'.Auth::user()->profile) }}" alt="" class="rounded-circle"></a>
+                        <a href="#"
+                            class="profile-image rounded-circle d-block m-0 wh-38"
+                            style="background-image:url('{{ asset('/import/profileImg/'.Auth::user()->profile) }}'); background-size: cover;"></a>
                         <div class="dropdown-wrapper">
                             <div class="nav-author__info">
                                 <div class="author-img">
-                                    <img src="/import/profileImg/{{ Auth::user()->profile }}" alt="" class="rounded-circle">
+                                    <a href="#"
+                                        class="profile-image rounded-circle d-block m-0 wh-38"
+                                        style="background-image:url('{{ asset('/import/profileImg/'.Auth::user()->profile) }}'); background-size: cover;"></a>
                                 </div>
                                 <div>
                                     <h6>{{ Auth::user()->nom .' '. Auth::user()->prenom }} </h6>

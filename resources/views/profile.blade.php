@@ -28,8 +28,8 @@
                                             <p class="ap-nameAddress__subTitle fs-14 m-0 text-capitalize">{{ Auth::user()->jobTitle }}</p>
                                         </div>
                                         <div class="ap-button button-group d-flex justify-content-center flex-wrap">
-                                            <button type="button" class="border text-capitalize px-25 color-gray transparent shadow2 radius-md">
-                                                <span data-feather="mail"></span>message</button>
+                                            <a href="{{url('chat')}}" class="btn border px-25 color-gray transparent shadow2 radius-md">
+                                                <span data-feather="mail"></span>Chat en ligne</a>
                                         </div>
                                     </div>
 
@@ -126,12 +126,14 @@
                             <div class="ap-tab-wrapper">
                                 <ul class="nav px-25 ap-tab-main" id="ap-tab" role="tablist">
                                     <li class="nav-item">
-                                        <a class="nav-link active" id="ap-overview-tab" data-toggle="pill" href="#ap-overview" role="tab" aria-controls="ap-overview" aria-selected="true">
+                                        <a class="nav-link active" id="mes-taches-tab" data-toggle="pill" href="#mes-taches" role="tab" aria-controls="mes-taches" aria-selected="true">
                                         <span class="badge badge-round badge-primary badge-lg">Toutes les tâches</span>
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" id="timeline-tab" data-toggle="pill" href="#timeline" role="tab" aria-controls="timeline" aria-selected="false">Timeline</a>
+                                        <a class="nav-link" id="projects-tab" data-toggle="pill" href="#projects" role="tab" aria-controls="projects" aria-selected="false">
+                                            <span class="badge badge-round badge-secondary text-white badge-lg">Tous les projets</span>
+                                        </a>
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link" id="activity-tab" data-toggle="pill" href="#activity" role="tab" aria-controls="activity" aria-selected="false">Activity</a>
@@ -141,16 +143,40 @@
                         </div>
                         <!-- Tab Menu End -->
                         <div class="tab-content mt-10" id="ap-tabContent">
-                            <div class="tab-pane fade show active" id="ap-overview" role="tabpanel" aria-labelledby="ap-overview-tab">
+                            <div class="tab-pane fade show active" id="mes-taches" role="tabpanel" aria-labelledby="mes-taches-tab">
                                 <div class="ap-content-wrapper">
+                                    <div class="d-none"><button type="reset"></button></div>
                                     <div class="row">
                                         <div class="col-lg-12">
                                             <!-- Product Table -->
                                             <div class="card mt-25 mb-40">
                                                 <div class="card-body p-0">
-                                                    <div class="userDatatable global-shadow border-0 bg-white w-100 mt-20 mb-20">
+                                                    <div class="w-100 p-2">
+                                                    <a href="{{url('mes-taches')}}" class="btn btn-success w-100">Géré mes Taches</a>
+                                                    </div>
+                                                    <div class="userDatatable global-shadow border-0 bg-white w-100 p-3">
                                                         <div class="table-responsive">
-                                                            <table class="table table-class" >
+                                                            <div id="filter-form-container">
+                                                                <div class="row mb-2">
+                                                                    <div class="col-8">
+                                                                        <!-- selct for searching-->
+                                                                        <select class  ="form-control" name="state" id="maxRows">
+                                                                            <option value="10">10</option>
+                                                                            <option value="15">15</option>
+                                                                            <option value="20">20</option>
+                                                                            <option value="50">50</option>
+                                                                            <option value="70">70</option>
+                                                                            <option value="100">100</option>
+                                                                            <option value="5000">Afficher TOUTES les lignes</option>
+                                                                        </select>
+                                                                    </div>
+                                                                    <!-- search input-->
+                                                                    <div class="tb_search col-md-4">
+                                                                        <input type="text" id="search_input_all"  placeholder="Rechercher.." class="form-control w-100">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <table class="table table-class" id="table-id">
                                                                 <thead>
                                                                     <tr class="userDatatable-header">
                                                                         <th style="width: 350px;">Description</th>
@@ -160,55 +186,60 @@
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
-                                                                        @foreach ($mes_taches as $data)
-                                                                            @php
-                                                                                $badge = "";
-                                                                                $badge2 = "";
-                                                                                $iconip = "";
-                                                                                if ($data->etatsk == 'en cours') {
-                                                                                    $badge = "badge badge-round text-white badge-warning badge-lg";
-                                                                                } else if ($data->etatsk == 'terminé') {
-                                                                                    $badge = "badge badge-round badge-success badge-lg";
-                                                                                } else if ($data->etatsk == 'pas commencé') {
-                                                                                    $badge = "badge badge-round badge-primary badge-lg";
-                                                                                }else if ($data->etatsk == 'annulé') {
-                                                                                    $badge = "badge badge-round badge-secondary text-white badge-lg";
-                                                                                }
-                                                                                if($data->importsk =='urgent'){
-                                                                                    $badge2 = "badge badge-round badge-danger text-white badge-lg";
-                                                                                    $iconip = "las la-exclamation-triangle";
-                                                                                }else if($data->importsk =='normal'){
-                                                                                    $badge2 = "badge badge-red badge-round badge-light badge-lg badge-outlined";
-                                                                                }
-                                                                            @endphp
-                                                                            <tr>
-                                                                                <td><span>{{ $data->desctsk }}</span></td>
-                                                                                <td><span class="{{ $badge }}">{{ $data->etatsk }}</span></td>
-                                                                                <td><span class="{{$badge2 }}">{{ $data->importsk.' ' }}
-                                                                                        <i class="{{$iconip}}"></i>
-                                                                                        <div class="badge-dot-wrap">
-                                                                                            <span class="badge-dot dot-success"></span>
-                                                                                        </div>
-                                                                                    </span>
-                                                                                </td>
-                                                                                <td class="text-center">@if ($data->tsksend)
-                                                                                    <span>{{ $data->tsksend }}</span>
-                                                                                    @else
-                                                                                        <span> - </span>
-                                                                                    @endif
-                                                                                </td>
-                                                                            </tr>
-                                                                        @endforeach
+                                                                    @foreach ($mes_taches as $data)
+                                                                        @php
+                                                                            $badge = "";
+                                                                            $badge2 = "";
+                                                                            $iconip = "";
+                                                                            if ($data->etatsk == 'en cours') {
+                                                                                $badge = "badge badge-round text-white badge-warning badge-lg";
+                                                                            } else if ($data->etatsk == 'terminé') {
+                                                                                $badge = "badge badge-round badge-success badge-lg";
+                                                                            } else if ($data->etatsk == 'pas commencé') {
+                                                                                $badge = "badge badge-round badge-primary badge-lg";
+                                                                            }else if ($data->etatsk == 'annulé') {
+                                                                                $badge = "badge badge-round badge-secondary text-white badge-lg";
+                                                                            }
+                                                                            if($data->importsk =='urgent'){
+                                                                                $badge2 = "badge badge-round badge-danger text-white badge-lg";
+                                                                                $iconip = "las la-exclamation-triangle";
+                                                                            }else if($data->importsk =='normal'){
+                                                                                $badge2 = "badge badge-red badge-round badge-light badge-lg badge-outlined";
+                                                                            }
+                                                                        @endphp
+                                                                        <tr>
+                                                                            <td><span class="dessc">{{ $data->desctsk }}</span></td>
+                                                                            <td><span class="{{ $badge }}">{{ $data->etatsk }}</span></td>
+                                                                            <td><span class="{{$badge2 }}">{{ $data->importsk.' ' }}
+                                                                                    <i class="{{$iconip}}"></i>
+                                                                                    <div class="badge-dot-wrap">
+                                                                                        <span class="badge-dot dot-success"></span>
+                                                                                    </div>
+                                                                                </span>
+                                                                            </td>
+                                                                            <td class="text-center">@if ($data->tsksend)
+                                                                                <span>{{ $data->tsksend }}</span>
+                                                                                @else
+                                                                                    <span> - </span>
+                                                                                @endif
+                                                                            </td>
+                                                                        </tr>
+                                                                    @endforeach
 
-                                                                </tbody>
+                                                            </tbody>
                                                             </table>
-                                                            <div class="d-none"><button type="reset"></button></div>
+
                                                         </div>
-                                                    </div>
-                                                    <div class="d-inline">
-                                                        <button class="btn btn-primary btn-default btn-rounded mb-50 w-40">Primary</button>
-                                                        <button class="btn btn-primary btn-default btn-rounded mb-50 w-40">Primary</button>
-    
+                                                        <!--		Start Pagination -->
+
+                                                        <div class="pagination-container justify-content-center row mt-2">
+                                                            <nav>
+                                                            <ul class="pagination pagination-sm">
+                                                            <!--	code pagination  -->
+                                                            </ul>
+                                                            </nav>
+                                                        </div>
+                                                         {{-- <div class="rows_count">Showing 11 to 20 of 91 entries</div> --}}
                                                     </div>
                                                 </div>
                                             </div>
@@ -217,7 +248,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="tab-pane fade" id="timeline" role="tabpanel" aria-labelledby="timeline-tab">
+                            <div class="tab-pane fade" id="projects" role="tabpanel" aria-labelledby="projects-tab">
                                 <div class="ap-post-content">
                                     <div class="row">
                                         <div class="col-xxl-8">
@@ -228,249 +259,44 @@
                                             <div class="card global-shadow mb-25">
                                                 <div class="friends-widget">
                                                     <div class="card-header px-md-25 px-3">
-                                                        <h6>Friends</h6>
+                                                        <h6>Projets</h6>
                                                     </div>
                                                     <div class="card-body p-0">
-                                                        <div class="ffw d-flex justify-content-between">
-                                                            <div class="d-flex flex-wrap">
-                                                                <div class="mr-3 ffw__imgWrapper">
-                                                                    <span class=" profile-image bg-opacity-secondary rounded-circle d-block ap-profile-image " style="background-image:url('img/author/4.jpg'); background-size: cover;"></span>
+                                                        {{--* projects td--}}
+                                                        @foreach ($All_projects as $projet)
+                                                            @php
+                                                            $status = "";
+                                                            if ($projet->statut == 'en cours') {
+                                                                $status = "badge badge-round text-white badge-warning badge-lg";
+                                                            } else if ($projet->statut == 'terminé') {
+                                                                $status = "badge badge-round badge-success badge-lg";
+                                                            }else if ($projet->statut == 'annulé') {
+                                                                $status = "badge badge-round badge-secondary text-white badge-lg";
+                                                            }
+                                                            @endphp
+                                                            <div class="ffw d-flex justify-content-between">
+                                                                <div class="d-flex flex-wrap">
+                                                                    <div class="ffw__title">
+                                                                        <a href="#" class="text-dark fw-500">
+                                                                            <h6>{{$projet->nomproj}}</h6>
+                                                                        </a>
+                                                                        <span class="d-block">
+                                                                            {{$projet->firstdate}}
+                                                                        </span>
+                                                                    </div>
                                                                 </div>
-                                                                <div class="ffw__title">
-                                                                    <a href="#" class="text-dark fw-500">
-                                                                        <h6>Meyri Carles</h6>
-                                                                    </a>
-                                                                    <span class="d-block">
-                                                                        UI Designer
-                                                                    </span>
-                                                                </div>
-                                                            </div>
-                                                            <div>
-
-
-
-
-                                                                <button class="btn btn-default btn-squared btn-outline-light friends-follow">follow
-                                                                </button>
-
-
-
-
-                                                            </div>
-                                                        </div>
-                                                        <div class="ffw d-flex justify-content-between">
-                                                            <div class="d-flex flex-wrap">
-                                                                <div class="mr-3 ffw__imgWrapper">
-                                                                    <span class=" profile-image bg-opacity-secondary rounded-circle d-block ap-profile-image " style="background-image:url('img/author/1.jpg'); background-size: cover;"></span>
-                                                                </div>
-                                                                <div class="ffw__title">
-                                                                    <a href="#" class="text-dark fw-500">
-                                                                        <h6>Shreyu Neu</h6>
-                                                                    </a>
-                                                                    <span class="d-block">
-                                                                        Product Designer
-                                                                    </span>
+                                                                <div>
+                                                                    <span class="{{ $status }}">{{ $projet->statut }}</span>
                                                                 </div>
                                                             </div>
-                                                            <div class="ffw__button">
+                                                        @endforeach
 
-
-
-
-                                                                <button class="btn btn-default btn-squared btn-outline-light friends-follow"><span data-feather="check"></span>
-                                                                    follow
-                                                                </button>
-
-
-
-
-                                                            </div>
-                                                        </div>
-                                                        <div class="ffw d-flex justify-content-between">
-                                                            <div class="d-flex flex-wrap">
-                                                                <div class="mr-3 ffw__imgWrapper">
-                                                                    <span class=" profile-image bg-opacity-secondary rounded-circle d-block ap-profile-image " style="background-image:url('img/author/4.jpg'); background-size: cover;"></span>
-                                                                </div>
-                                                                <div class="ffw__title">
-                                                                    <a href="#" class="text-dark fw-500">
-                                                                        <h6>Domnic Harris</h6>
-                                                                    </a>
-                                                                    <span class="d-block">
-                                                                        Executive Assistant
-                                                                    </span>
-                                                                </div>
-                                                            </div>
-                                                            <div class="ffw__button">
-
-
-
-
-                                                                <button class="btn btn-default btn-squared btn-outline-light friends-follow"><span data-feather="check"></span>
-                                                                    follow
-                                                                </button>
-
-
-
-
-                                                            </div>
-                                                        </div>
-                                                        <div class="ffw d-flex justify-content-between">
-                                                            <div class="d-flex flex-wrap">
-                                                                <div class="mr-3 ffw__imgWrapper">
-                                                                    <span class=" profile-image bg-opacity-secondary rounded-circle d-block ap-profile-image " style="background-image:url('img/author/2.jpg'); background-size: cover;"></span>
-                                                                </div>
-                                                                <div class="ffw__title">
-                                                                    <a href="#" class="text-dark fw-500">
-                                                                        <h6>Khalid Hasan</h6>
-                                                                    </a>
-                                                                    <span class="d-block">
-                                                                        UI director
-                                                                    </span>
-                                                                </div>
-                                                            </div>
-                                                            <div class="ffw__button">
-
-
-
-
-                                                                <button class="btn btn-default btn-squared btn-outline-light friends-follow"><span data-feather="check"></span>
-                                                                    follow
-                                                                </button>
-
-
-
-
-                                                            </div>
-                                                        </div>
-                                                        <div class="ffw d-flex justify-content-between">
-                                                            <div class="d-flex flex-wrap">
-                                                                <div class="mr-3 ffw__imgWrapper">
-                                                                    <span class=" profile-image bg-opacity-secondary rounded-circle d-block ap-profile-image " style="background-image:url('img/author/3.jpg'); background-size: cover;"></span>
-                                                                </div>
-                                                                <div class="ffw__title">
-                                                                    <a href="#" class="text-dark fw-500">
-                                                                        <h6>Tuhin Molla</h6>
-                                                                    </a>
-                                                                    <span class="d-block">
-                                                                        System Administrator
-                                                                    </span>
-                                                                </div>
-                                                            </div>
-                                                            <div class="ffw__button">
-
-
-
-
-                                                                <button class="btn btn-default btn-squared btn-outline-light friends-follow"><span data-feather="check"></span>
-                                                                    follow
-                                                                </button>
-
-
-
-
-                                                            </div>
-                                                        </div>
-                                                        <a class="view-more-comment color-primary fs-13 fw-500 px-25 pb-20" href="#">Load more friends</a>
                                                     </div>
                                                 </div>
                                             </div>
                                             <!-- Friend Widgets End -->
 
-                                            <!-- Gallery Image -->
-                                            <div class="card global-shadow mb-25">
-                                                <div class="photo-gallery-widget">
-                                                    <div class="card-header justify-content-between d-flex flex-wrap px-md-25 px-3">
-                                                        <h6>photos</h6>
-                                                        <a class="color-primary fs-13 fw-500 mt-lg-0 mt-1" href="#">see all</a>
-                                                    </div>
-                                                    <div class="card-body">
-                                                        <div class="wig">
-                                                            <div class="wig__item">
-                                                                <img src="img/315.png" alt="gallery">
-                                                            </div>
-                                                            <div class="wig__item">
-                                                                <img src="img/325.png" alt="gallery">
-                                                            </div>
-                                                            <div class="wig__item">
-                                                                <img src="img/design.png" alt="gallery">
-                                                            </div>
-                                                            <div class="wig__item">
-                                                                <img src="img/99.png" alt="gallery">
-                                                            </div>
-                                                            <div class="wig__item">
-                                                                <img src="img/166.png" alt="gallery">
-                                                            </div>
-                                                            <div class="wig__item">
-                                                                <img src="img/287.png" alt="gallery">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- Gallery Image End -->
 
-                                            <!-- Gallery Video Popup -->
-                                            <div class="card global-shadow mb-25">
-                                                <div class="video-gallery-widget">
-                                                    <div class="card-header justify-content-between d-flex flex-wrap px-md-25 px-3">
-                                                        <h6>videos</h6>
-                                                        <a class="color-primary fs-13 fw-500 mt-lg-0 mt-1" href="#">see all</a>
-                                                    </div>
-                                                    <div class="card-body">
-                                                        <div class="wig">
-                                                            <div class="wig__item wig-overlay">
-                                                                <img src="img/juice-2.png" alt="gallery">
-                                                                <div class="wig-overlay__content">
-                                                                    <a class="wig-overlay__iconWrapper popup-youtube" href="https://www.youtube.com/watch?v=i9E_Blai8vk">
-                                                                        <img class="svg" src="img/svg/play.svg" alt="img">
-                                                                    </a>
-                                                                </div>
-                                                            </div>
-                                                            <div class="wig__item wig-overlay">
-                                                                <img src="img/cup-card.png" alt="gallery">
-                                                                <div class="wig-overlay__content">
-                                                                    <a class="wig-overlay__iconWrapper popup-youtube" href="https://www.youtube.com/watch?v=i9E_Blai8vk">
-                                                                        <img class="svg" src="img/svg/play.svg" alt="img">
-                                                                    </a>
-                                                                </div>
-                                                            </div>
-                                                            <div class="wig__item wig-overlay">
-                                                                <img src="img/round-box.png" alt="gallery">
-                                                                <div class="wig-overlay__content">
-                                                                    <a class="wig-overlay__iconWrapper popup-youtube" href="https://www.youtube.com/watch?v=i9E_Blai8vk">
-                                                                        <img class="svg" src="img/svg/play.svg" alt="img">
-                                                                    </a>
-                                                                </div>
-                                                            </div>
-                                                            <div class="wig__item wig-overlay">
-                                                                <img src="img/glass.png" alt="gallery">
-                                                                <div class="wig-overlay__content">
-                                                                    <a class="wig-overlay__iconWrapper popup-youtube" href="https://www.youtube.com/watch?v=i9E_Blai8vk">
-                                                                        <img class="svg" src="img/svg/play.svg" alt="img">
-                                                                    </a>
-                                                                </div>
-                                                            </div>
-                                                            <div class="wig__item wig-overlay">
-                                                                <img src="img/bottles.png" alt="gallery">
-                                                                <div class="wig-overlay__content">
-                                                                    <a class="wig-overlay__iconWrapper popup-youtube" href="https://www.youtube.com/watch?v=i9E_Blai8vk">
-                                                                        <img class="svg" src="img/svg/play.svg" alt="img">
-                                                                    </a>
-                                                                </div>
-                                                            </div>
-                                                            <div class="wig__item wig-overlay">
-                                                                <img src="img/325.png" alt="gallery">
-                                                                <div class="wig-overlay__content">
-                                                                    <a class="wig-overlay__iconWrapper" href="#">
-                                                                        <img class="svg" src="img/svg/play.svg" alt="img">
-                                                                    </a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- Gallery Video Popup End -->
                                         </div>
                                     </div>
                                 </div>
@@ -1249,4 +1075,21 @@
 
 
 @section('script')
+<script src="{{ asset('import/assets/vendor_assets/js/paginaseach.js')}}"></script>
+<script>
+    var descriptions = document.getElementsByClassName("dessc");
+for (var i = 0; i < descriptions.length; i++) {
+    var description = descriptions[i].innerHTML;
+    var words = description.split(' ');
+    var newDescription = "";
+    for (var j = 0; j < words.length; j++) {
+        newDescription += words[j] + ' ';
+        if (j > 0 && j % 6 === 0) {
+            newDescription += '<br>';
+        }
+    }
+    descriptions[i].innerHTML = newDescription;
+}
+
+</script>
 @endsection

@@ -75,8 +75,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
-
+    'timezone' => 'Africa/Casablanca',
     /*
     |--------------------------------------------------------------------------
     | Application Locale Configuration

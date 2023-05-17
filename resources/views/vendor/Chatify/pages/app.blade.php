@@ -1,10 +1,12 @@
 @include('Chatify::layouts.headLinks')
+
         <div class="messenger mt-1">
             {{-- ----------------------Users/Groups lists side---------------------- --}}
             <div class="messenger-listView {{ !!$id ? 'conversation-active' : '' }}">
                 {{-- Header and search bar --}}
                 <div class="m-header">
                     <nav>
+                        <a class="btn btn-warning" style="cursor: pointer;" onclick="window.history.back();"><i class="fas fa-arrow-alt-circle-left"></i>Go Back</a><br><br>
                         <a href="#"><i class="fas fa-inbox"></i> <span class="messenger-headTitle">MESSAGES</span> </a>
                         {{-- header buttons --}}
                         <nav class="m-header-right">

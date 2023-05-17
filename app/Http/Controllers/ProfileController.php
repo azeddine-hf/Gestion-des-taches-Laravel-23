@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Project;
 use App\Models\Tasks;
 use Illuminate\Http\Request;
 use App\Models\Client;
@@ -35,12 +36,18 @@ class ProfileController extends Controller
                            ->select('tasks.id as idtsk', 'users.nom as nomuser','users.prenom as prenuser', 'projects.title as projname', 'projects.title as pname', 'tasks.desc_task as desctsk', 'tasks.status as etatsk', 'tasks.date_start as tskstart', 'tasks.date_end as tsksend', 'tasks.property as importsk')
                            ->orderBy('tasks.date_start', 'asc') // Order by date_start column in ascending order
                            ->get();
-        return view('profile', 
+        //todo les projets
+        $project = Project::where('isDeleted', '=', '0')
+                           ->select('title as nomproj','startDate as firstdate', 'status as statut')
+                           ->orderBy('startDate', 'asc') // Order by date_start column in ascending order
+                           ->get();
+        return view('profile',
         [
             'count_done' => $dones,
             'count_wait' => $waiting,
             'mes_taches' => $tasks,
-            
+            'All_projects' => $project,
+
         ]);
     }
 
