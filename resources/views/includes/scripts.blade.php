@@ -74,7 +74,6 @@
 
 function loadUnseenMessages() {
     $.get('/notifications/unseen-messages', function (data) {
-        console.log(data.contacts);
         // Update the total unseen messages count
         var totalUnseenMessagesCount = data.totalUnseenMessageCount;
 
@@ -96,8 +95,21 @@ function loadUnseenMessages() {
         $('.notifications-list').html(notifications);
     });
 }
+function loadBellMsg() {
+    $.get('/notifications/bell-messages', function (data) {
+        var messageCount = data.messageCount;
 
+        // Update the total unseen messages count
 
+        // Add or remove the "nav-item-toggle" class based on the message count
+        if (messageCount > 0) {
+            $('#message_bell').addClass('nav-item-toggle');
+        } else {
+            $('#message_bell').removeClass('nav-item-toggle');
+        }
+    });
+}
+loadBellMsg();
         });
 </script>
 

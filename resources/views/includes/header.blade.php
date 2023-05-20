@@ -33,7 +33,7 @@
                 </li>
                 <li class="nav-message">
                     <div class="dropdown-custom">
-                        <a href="javascript:;" class="{{ $newMessageCount > 0 ? 'nav-item-toggle' : '' }}">
+                        <a href="javascript:;" class="text-light" id="message_bell">
                             <span data-feather="mail"></span></a>
                         <div class="dropdown-wrapper">
                             <h2 class="dropdown-wrapper__title">Messages <span class="badge-circle badge-success ml-1 unseen-messages-count">0</span></h2>

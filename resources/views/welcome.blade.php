@@ -8,7 +8,7 @@
             <div class="container-fluid">
                 <div class="social-dash-wrap">
                     <div class="row">
-                        
+
                         <div class="col-lg-4 mb-25">
                             <div class="social-overview-wrap">
 
@@ -137,7 +137,7 @@
                                                                     <div class="overview-single__chart">
                                                                         <div class="parentContainer">
 
-
+<button type="reset"></button>
                                                                             <div>
                                                                                 <canvas id="lineChartTwo"></canvas>
                                                                             </div>
@@ -1102,15 +1102,15 @@
                             </div>
 
                         </div>
-                        
-                       
-                      
+
+
+
                     </div>
                 </div>
             </div>
 
         </div>
-        
+
     </main>
     <div id="overlayer">
         <span class="loader-overlay">

@@ -8,6 +8,17 @@ use Illuminate\Support\Facades\Auth;
 
 class NotificationController extends Controller
 {
+    public function getUnseenBell()
+    {
+        $user = Auth::user();
+
+        $messageCount = ChMessage::where('to_id', $user->id)
+            ->where('seen', false)
+            ->count();
+
+        return response()->json(['messageCount' => $messageCount]);
+    }
+
     public function getUnseenMessages()
 {
     //* unseen for all users
