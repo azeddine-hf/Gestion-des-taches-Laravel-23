@@ -408,7 +408,10 @@ function IDinfo(id) {
         // focus on messaging input
         messageInput.focus();
         // update info in view
-        $(".messenger-infoView .info-name").text(data.fetch.nom +' '+data.fetch.prenom);
+        $(".messenger-infoView .info-name").text(data.fetch.nom +'  '+data.fetch.prenom);
+        if (data.fetch.isAdmin == 1 || data.fetch.isAdmin == 2) {
+        $("#isAdmin").text('Admin');
+        }
         $(".m-header-messaging .user-name").text(data.fetch.nom +' '+data.fetch.prenom);
         // Star status
         data.favorite > 0
@@ -675,7 +678,7 @@ clientListenChannel.bind("client-contactItem", function (data) {
     if (data.update) {
       updateContactItem(data.from);
     } else {
-      console.error("Can not update contact item!");
+      console.error("Impossible de mettre à jour l'élément de contact !");
     }
   }
 });
@@ -1141,7 +1144,7 @@ function deleteMessage(id) {
     success: (data) => {
       $(".messages").find(`.message-card[data-id=${id}]`).remove();
       if (!data.deleted)
-        console.error("Error occurred, message can not be deleted!");
+        console.error("Une erreur s'est produite, le message ne peut pas être supprimé !");
 
       sendMessageDeleteEvent(id);
 

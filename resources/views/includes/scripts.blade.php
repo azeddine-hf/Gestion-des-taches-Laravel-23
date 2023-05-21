@@ -1,4 +1,4 @@
-<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDduF2tLXicDEPDMAtC6-NLOekX0A5vlnY"></script>
+{{-- <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDduF2tLXicDEPDMAtC6-NLOekX0A5vlnY"></script> --}}
 <script src="{{ asset('import/assets/vendor_assets/js/jquery/jquery-3.5.1.min.js')}}"></script>
     <script src="{{ asset('import/assets/vendor_assets/js/jquery/jquery-ui.js')}}"></script>
     <script src="{{ asset('import/assets/vendor_assets/js/bootstrap/popper.js')}}"></script>
@@ -39,8 +39,8 @@
     <script src="{{ asset('import/assets/theme_assets/js/drag-drop.js')}}"></script>
     <script src="{{ asset('import/assets/theme_assets/js/footable.js')}}"></script>
     <script src="{{ asset('import/assets/theme_assets/js/full-calendar.js')}}"></script>
-    <script src="{{ asset('import/assets/theme_assets/js/googlemap-init.js')}}"></script>
-    <script src="{{ asset('import/assets/theme_assets/js/icon-loader.js')}}"></script>
+    {{-- <script src="{{ asset('import/assets/theme_assets/js/googlemap-init.js')}}"></script> --}}
+    {{-- <script src="{{ asset('import/assets/theme_assets/js/icon-loader.js')}}"></script> --}}
     <script src="{{ asset('import/assets/theme_assets/js/jvectormap-init.js')}}"></script>
     <script src="{{ asset('import/assets/theme_assets/js/leaflet-init.js')}}"></script>
     <script src="{{ asset('import/assets/theme_assets/js/main.js')}}"></script>
@@ -48,7 +48,13 @@
     <script src="{{ asset('import/assets/vendor_assets/js/fontawesome.init.js')}}"></script>
     <script src="{{ asset('import/assets/vendor_assets/js/toast.script.js')}}"></script>
     <script>
-        $(document).ready(function() {
+
+$(document).ready(function() {
+    $.ajaxSetup({
+          headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+             }
+    });
             loadUnseenMessages();
             function mayFuncToDate(dateString) {
                 const now = moment();
@@ -71,7 +77,7 @@
                     return `il y a ${weeks} sm`;
                 }
 }
-
+// for useen message notif
 function loadUnseenMessages() {
     $.get('/notifications/unseen-messages', function (data) {
         // Update the total unseen messages count
@@ -82,19 +88,26 @@ function loadUnseenMessages() {
 
         // Update the notifications list
         var notifications = '';
-        $.each(data.contacts, function (index, contact) {
-            notifications += '<li class="author-online has-new-message">';
-            notifications += `<div class="user-avater"><a href="#" class="profile-image rounded-circle d-block m-0 wh-38" style="background-image:url('/import/profileImg/` + contact.profile + `'); background-size: cover;"></a></div>`;
-            notifications += '<div class="user-message"><p>';
-            notifications += '<a href="/chat/' + contact.id + '" class="subject stretched-link text-truncate" style="max-width: 180px;">' + contact.name + ' ' + contact.lname + '</a>';
-            notifications += '<span class="time-posted">' + mayFuncToDate(contact.datenow) + '</span></p>';
-            notifications += '<p><span class="desc text-truncate fw-600" style="max-width: 215px;">' + contact.msg + '</span>';
-            notifications += '<span class="msg-count badge-circle badge-success badge-sm">' + contact.unseenMessageCount + '</span></p></div>';
-            notifications += '</li>';
-        });
+        if (data.totalUnseenMessageCount == 0) {
+            notifications += '<li class="badge badge-light text-white rounded-pill ">Vous ñ\'avez pas de nouveau message</li>';
+        }
+        else{
+            $.each(data.contacts, function (index, contact) {
+                notifications += '<li class="author-online has-new-message">';
+                notifications += `<div class="user-avater"><a href="#" class="profile-image rounded-circle d-block m-0 wh-38" style="background-image:url('/import/profileImg/` + contact.profile + `'); background-size: cover;"></a></div>`;
+                notifications += '<div class="user-message"><p>';
+                notifications += '<a href="/chat/' + contact.id + '" class="subject stretched-link text-truncate" style="max-width: 180px;">' + contact.name + ' ' + contact.lname + '</a>';
+                notifications += '<span class="time-posted">' + mayFuncToDate(contact.datenow) + '</span></p>';
+                notifications += '<p><span class="desc text-truncate fw-600" style="max-width: 215px;">' + contact.msg + '</span>';
+                notifications += '<span class="msg-count badge-circle badge-success badge-sm">' + contact.unseenMessageCount + '</span></p></div>';
+                notifications += '</li>';
+            });            
+        }
         $('.notifications-list').html(notifications);
+        
     });
 }
+// this shows bell in icon message
 function loadBellMsg() {
     $.get('/notifications/bell-messages', function (data) {
         var messageCount = data.messageCount;
@@ -110,6 +123,53 @@ function loadBellMsg() {
     });
 }
 loadBellMsg();
+//new added tasks today notif
+function loadTodayTasks() {
+    $.get('/notifications/today-tasks', function (data) {
+        var tasksList = $('#notificationList');
+        var notificationCount = $('#notificationCount');
+        $("#count-notif").text(data.length);
+        tasksList.empty(); // Clear the list before adding new tasks
+
+        if (data.length == 0) {
+            tasksList.append('<div class="col-12"><li class="text-center badge-light text-white pl-2 pr-2 rounded-pill mt-2 mb-2">Aucune tâche ajoutée aujourd\'hui.</li></div>');
+        } else {
+            var notifications = '';
+            $.each(data, function(index, task) {
+                var createdDate = mayFuncToDate(task.created_at);
+                var badgeClass = (task.property === 'urgent') ? 'tag-danger' : 'tag-success';
+                notifications += '<li class="nav-notification__single nav-notification__single--unread d-flex flex-wrap">';
+                notifications += `<div class="nav-notification__type nav-notification__type--success">
+                    <i class="fa fa-share"></i></div>`;
+                notifications += '<div class="nav-notification__details">Vous avez une nouvelle tâche <p>';
+                notifications += '<a href="{{url("mes-taches")}}" class="subject atbd-tag tag-transparented '+badgeClass+'" style="max-width: 180px;">'+task.property+'</a>';
+                notifications += '<span></span></p>';
+                notifications += '<p><span class="time-posted">'+createdDate+'</span></p>';
+                notifications += '</div></li>';
+            });
+        $('#notificationList').html(notifications);
+        }
+        notificationCount.text(data.length);
+    });
+}
+loadTodayTasks();
+function loadBellnotif() {
+    $.get('/notifications/bell-notification', function (data) {
+        var tasksCount = data;
+
+        // Update the total unseen messages count
+        $('#notificationCount').text(tasksCount);
+
+        // Add or remove the "nav-item-toggle" class based on the message count
+        if (tasksCount > 0) {
+            $('#notif_bell').addClass('nav-item-toggle');
+        } else {
+            $('#notif_bell').removeClass('nav-item-toggle');
+        }
+    });
+}
+
+loadBellnotif();
         });
 </script>
 

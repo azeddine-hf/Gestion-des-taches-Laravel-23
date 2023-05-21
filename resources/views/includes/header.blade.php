@@ -38,47 +38,59 @@
                         <div class="dropdown-wrapper">
                             <h2 class="dropdown-wrapper__title">Messages <span class="badge-circle badge-success ml-1 unseen-messages-count">0</span></h2>
                             {{--unseen messages--}}
-                            <ul class="notifications-list">
+                            <ul class="notifications-list" >
 
                             </ul>
                             <a href="{{url('chat')}}" class="dropdown-wrapper__more">Voir tous les messages</a>
                         </div>
                     </div>
                 </li>
-                <!-- ends: nav-message -->
-                <li class="">
+                <!-- ends: nav-notif -->
+
+                    <!-- ends: nav-message -->
+                    <li class="nav-notification">
+                        <div class="dropdown-custom">
+                            <a href="javascript:;" class="text-light" id="notif_bell">
+                                <span data-feather="bell"></span></a>
+                            <div class="dropdown-wrapper">
+                                <h2 class="dropdown-wrapper__title">Notifications <span class="badge-circle badge-success ml-1" id="count-notif">0</span></h2>
+                                <ul class="notifications-list2" id="notificationList">
+                                    
+                                </ul>
+                                <a href="{{url('mes-taches')}}" class="dropdown-wrapper__more">Voir toutes les tâches </a>
+                            </div>
+                        </div>
+                     </li>{{--
+                <li class="nav-notification">
                     <div class="dropdown-custom">
-                        <a href="javascript:;" class="nav-item-toggle">
+                        <a href="javascript:;" class="text-light" id="message_bell">
                             <span data-feather="bell"></span>
-                            <span class="badge badge-danger badge-sm "></span>
                         </a>
                         <div class="dropdown-wrapper">
-                            <h2 class="dropdown-wrapper__title">Notifications</h2>
-                            <ul class="tasks-list">
-                                <!-- AJAX data will be inserted here -->
-                            </ul>
-                            <a href="" class="dropdown-wrapper__more">See all incoming activity</a>
+                            <h2 class="dropdown-wrapper__title">Notifications <span class="badge-circle badge-success ml-1" id="notificationCount">0</span></h2>
+                            <ul class="notifications-list2" id="notificationList"></ul>
                         </div>
                     </div>
-                </li>
+                </li> --}}
+
                 <!-- ends: .nav-notification -->
                 &nbsp;&nbsp;
-                <h6>{{Auth::user()->nom .' '. Auth::user()->prenom }} </h6>
+                <h6 class="text-capitalize">{{Auth::user()->nom .' '. Auth::user()->prenom }} </h6>
                 <li class="nav-author">
                     <div class="dropdown-custom">
                         <a href="#"
-                            class="profile-image rounded-circle d-block m-0 wh-38"
+                            class="profile-image rounded-circle d-block m-0 wh-40"
                             style="background-image:url('{{ asset('/import/profileImg/'.Auth::user()->profile) }}'); background-size: cover;"></a>
                         <div class="dropdown-wrapper">
                             <div class="nav-author__info">
                                 <div class="author-img">
                                     <a href="#"
-                                        class="profile-image rounded-circle d-block m-0 wh-38"
+                                        class="profile-image rounded-circle d-block m-0 wh-50"
                                         style="background-image:url('{{ asset('/import/profileImg/'.Auth::user()->profile) }}'); background-size: cover;"></a>
                                 </div>
                                 <div>
-                                    <h6>{{ Auth::user()->nom .' '. Auth::user()->prenom }} </h6>
-                                    <span>{{ Auth::user()->jobTitle }} </span>
+                                    <h6 class="text-capitalize">{{ Auth::user()->nom .' '. Auth::user()->prenom }} </h6>
+                                    <span class="text-capitalize">{{ Auth::user()->jobTitle }} </span>
                                 </div>
                             </div>
                             <div class="nav-author__options">
@@ -92,16 +104,8 @@
                                             <span data-feather="settings"></span> Settings</a>
                                     </li>
                                     <li>
-                                        <a href="">
-                                            <span data-feather="key"></span> Billing</a>
-                                    </li>
-                                    <li>
-                                        <a href="">
-                                            <span data-feather="users"></span> Activity</a>
-                                    </li>
-                                    <li>
-                                        <a href="">
-                                            <span data-feather="bell"></span> Help</a>
+                                        <a href="{{url('chat')}}">
+                                            <span data-feather="message-circle"></span> Contactez Admin</a>
                                     </li>
                                 </ul>
                                 <a href="javascript:void" class="nav-author__signout"

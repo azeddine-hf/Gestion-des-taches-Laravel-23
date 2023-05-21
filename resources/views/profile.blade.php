@@ -21,7 +21,9 @@
                                     <div class="account-profile">
                                         <div class="ap-img w-100 d-flex justify-content-center">
                                             <!-- Profile picture image-->
-                                            <img class="ap-img__main rounded-circle mb-3  wh-120 d-flex bg-opacity-primary" src="/import/profileImg/{{ Auth::user()->profile }}" alt="{{ Auth::user()->nom .' '. Auth::user()->prenom }}">
+                                            <a href="#"
+                                                class="profile-image rounded-circle d-block m-0 wh-100"
+                                                style="background-image:url('{{ asset('/import/profileImg/'.Auth::user()->profile) }}'); background-size: cover;"></a>
                                         </div>
                                         <div class="ap-nameAddress pb-3 pt-1">
                                             <h5 class="ap-nameAddress__title text-capitalize">{{ Auth::user()->nom .' '. Auth::user()->prenom }}</h5>
@@ -51,10 +53,13 @@
                                                 <i class="las la-envelope p-right-10" style="font-size: 18px;"></i>
                                                 {{ Auth::user()->email }}
                                             </div><br>
+                                                @if (Auth::user()->telephone!=Null)
                                             <div class="text-white badge badge-round badge-info " style="font-size: 18px;">
                                                 <i class="las la-phone p-right-10" style="font-size: 18px;"></i>
                                                 <span class="p-right-10">{{ Auth::user()->telephone }}</span>
                                             </div>
+                                                @endif
+                                           
                                         </div>
                                     </div>
                                 </div>

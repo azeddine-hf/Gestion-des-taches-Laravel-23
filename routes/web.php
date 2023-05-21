@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\TasksController;
@@ -25,23 +26,23 @@ use App\Http\Middleware\SuperAdminMiddleware;
 */
 Route::group(['middleware' => ['auth']], function () {
 
-    // Common routes
-
-    Route::get('/', function () {
-        return view('welcome');
-    });
-
     //* Routes accessible to all authenticated users
 
     //! notification routes
     Route::get('/notifications/unseen-messages', [NotificationController::class, 'getUnseenMessages']);
     Route::get('/notifications/bell-messages', [NotificationController::class, 'getUnseenBell']);
+    Route::get('/notifications/today-tasks', [NotificationController::class, 'todayTasks']);
+    Route::get('/notifications/bell-notification', [NotificationController::class, 'getNotifBell']);
+
     //! routs for My tasks
     Route::get('/mes-taches', [MyTasksController::class, 'index']);
     Route::get('/show_wait_tasks', [MyTasksController::class, 'showwaiting'])->name('waiting_tasks');
     Route::get('/show_done_tasks', [MyTasksController::class, 'showdones'])->name('done_tasks');
     Route::post('/update_tasks', [MyTasksController::class, 'updateTasks2']);
-    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+    Route::get('/', [HomeController::class, 'index'])->name('home');
+    Route::get('/home', function () {
+        return redirect('/');
+    });
     Route::get('/profile', [ProfileController::class, 'index']);
 
 

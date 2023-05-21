@@ -36,7 +36,7 @@ $lastMessageBody = strlen($lastMessageBody) > 30 ? mb_substr($lastMessageBody, 0
         </td>
         {{-- center side --}}
         <td>
-        <p data-id="{{ $user->id }}" data-type="user">
+        <p data-id="{{ $user->id }}" data-type="user" class="text-capitalize">
             {{strlen($user->nom.' '.$user->prenom) > 17 ? trim(substr($user->nom.' '.$user->prenom,0,17)).'..' : $user->nom.' '.$user->prenom }}
             <span class="contact-item-time" data-time="{{$lastMessage->created_at}}">{{ $lastMessage->timeAgo }}</span></p>
         <span>

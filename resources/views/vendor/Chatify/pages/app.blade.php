@@ -6,7 +6,7 @@
                 {{-- Header and search bar --}}
                 <div class="m-header">
                     <nav>
-                        <a class="btn btn-warning" style="cursor: pointer;" onclick="window.history.back();"><i class="fas fa-arrow-alt-circle-left"></i>Go Back</a><br><br>
+                        <a class="btn btn-warning" style="cursor: pointer;" onclick="window.history.back();"><i class="fas fa-arrow-alt-circle-left"></i> Retourner</a><br><br>
                         <a href="#"><i class="fas fa-inbox"></i> <span class="messenger-headTitle">MESSAGES</span> </a>
                         {{-- header buttons --}}
                         <nav class="m-header-right">

@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Tasks;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -23,6 +26,13 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $today = Carbon::today()->toDateString();
+        $loggedInUserId = Auth::id();
+
+    $Todaytasks = Tasks::select('id_user', 'desc_task')
+        ->whereDate('created_at', $today)
+        ->where('id_user', $loggedInUserId)
+        ->get();
+     return view('welcome', ['Todaytasks' => $Todaytasks]);
     }
 }

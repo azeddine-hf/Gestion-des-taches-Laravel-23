@@ -2,11 +2,10 @@
 @section('title','Accueil')
 @section('active','active')
     @section('content')
-
+<br>
     <main class="main-content">
         <div class="contents expanded">
             <div class="container-fluid">
-                <div class="social-dash-wrap">
                     <div class="row">
 
                         <div class="col-lg-4 mb-25">
@@ -14,53 +13,20 @@
 
                                 <div class="card border-0">
                                     <div class="card-header">
-                                        <h6>Social Media Overview</h6>
+                                        <h6 class="text-capitalize">tâches d'aujourd'hui</h6>
                                     </div>
                                     <div class="card-body">
-                                        <ul class="social-overview">
-                                            <li>
-                                                <div class="social-box bg-facebook">
-                                                    <span class="la la-facebook"></span>
-                                                </div>
-                                                <h3>5,461</h3>
-                                                <p>Likes</p>
-                                            </li>
-                                            <li>
-                                                <div class="social-box bg-twitter">
-                                                    <span class="la la-twitter"></span>
-                                                </div>
-                                                <h3>5,461</h3>
-                                                <p>Followers</p>
-                                            </li>
-                                            <li>
-                                                <div class="social-box gradientInstragram">
-                                                    <span class="la la-instagram"></span>
-                                                </div>
-                                                <h3>5,461</h3>
-                                                <p>Followers</p>
-                                            </li>
-                                            <li>
-                                                <div class="social-box bg-youtube">
-                                                    <span class="la la-youtube"></span>
-                                                </div>
-                                                <h3>5,461</h3>
-                                                <p>Subscribers</p>
-                                            </li>
-                                            <li>
-                                                <div class="social-box bg-pinterest">
-                                                    <span class="la la-pinterest"></span>
-                                                </div>
-                                                <h3>5,461</h3>
-                                                <p>Followers</p>
-                                            </li>
-                                            <li>
-                                                <div class="social-box bg-linkedin">
-                                                    <span class="la la-linkedin"></span>
-                                                </div>
-                                                <h3>5,461</h3>
-                                                <p>Followers</p>
-                                            </li>
+                                    @if($Todaytasks->isEmpty())
+                                            <p>No tasks added today.</p>
+                                    @else
+                                        <ul>
+                                            @foreach($Todaytasks as $task)
+                                                <li>User ID: {{ $task->id_user }}</li>
+                                                <li>Task: {{ $task->desc_task }}</li>
+                                                <hr>
+                                            @endforeach
                                         </ul>
+                                    @endif
                                     </div>
                                 </div>
 
@@ -137,7 +103,7 @@
                                                                     <div class="overview-single__chart">
                                                                         <div class="parentContainer">
 
-<button type="reset"></button>
+                                                                            <button type="reset"></button>
                                                                             <div>
                                                                                 <canvas id="lineChartTwo"></canvas>
                                                                             </div>
@@ -1106,7 +1072,7 @@
 
 
                     </div>
-                </div>
+
             </div>
 
         </div>

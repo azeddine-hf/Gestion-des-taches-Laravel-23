@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\ChMessage;
+use App\Models\Tasks;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -20,42 +22,67 @@ class NotificationController extends Controller
     }
 
     public function getUnseenMessages()
-{
-    //* unseen for all users
-    $user = Auth::user();
-    $messages = ChMessage::where('to_id', $user->id)
-        ->where('seen', false)
-        ->orderBy('ch_messages.created_at', 'desc')
-        ->leftJoin('users', 'ch_messages.from_id', '=', 'users.id')
-        ->select('ch_messages.from_id', 'ch_messages.seen', 'ch_messages.body as bodymsg', 'ch_messages.created_at as datenow', 'users.nom', 'users.prenom as lname', 'users.profile')
-        ->get();
-
-    $totalUnseenMessageCount = 0; // Variable to store the total count
-
-    $contacts = $messages->unique('from_id')->map(function ($message) use (&$totalUnseenMessageCount) {
-        $unseenMessageCount = ChMessage::where('to_id', Auth::user()->id)
-            ->where('from_id', $message->from_id)
+    {
+        //* unseen for all users
+        $user = Auth::user();
+        $messages = ChMessage::where('to_id', $user->id)
             ->where('seen', false)
-            ->count();
+            ->orderBy('ch_messages.created_at', 'desc')
+            ->leftJoin('users', 'ch_messages.from_id', '=', 'users.id')
+            ->select('ch_messages.from_id', 'ch_messages.seen', 'ch_messages.body as bodymsg', 'ch_messages.created_at as datenow', 'users.nom', 'users.prenom as lname', 'users.profile')
+            ->get();
 
-        $totalUnseenMessageCount += $unseenMessageCount; // Increment the total count
+        $totalUnseenMessageCount = 0; // Variable to store the total count
 
-        return [
-            'id' => $message->from_id,
-            'name' => $message->nom ?: '',
-            'lname' => $message->lname ?: '',
-            'datenow' => $message->datenow ?: '',
-            'msg' => $message->bodymsg ?: '',
-            'profile' => $message->profile ?: '',
-            'unseenMessageCount' => $unseenMessageCount,
-        ];
-    });
+        $contacts = $messages->unique('from_id')->map(function ($message) use (&$totalUnseenMessageCount) {
+            $unseenMessageCount = ChMessage::where('to_id', Auth::user()->id)
+                ->where('from_id', $message->from_id)
+                ->where('seen', false)
+                ->count();
 
-    return response()->json([
-        'totalUnseenMessageCount' => $totalUnseenMessageCount,
-        'contacts' => $contacts,
-    ]);
-}
+            $totalUnseenMessageCount += $unseenMessageCount; // Increment the total count
+
+            return [
+                'id' => $message->from_id,
+                'name' => $message->nom ?: '',
+                'lname' => $message->lname ?: '',
+                'datenow' => $message->datenow ?: '',
+                'msg' => $message->bodymsg ?: '',
+                'profile' => $message->profile ?: '',
+                'unseenMessageCount' => $unseenMessageCount,
+            ];
+        });
+
+        return response()->json([
+            'totalUnseenMessageCount' => $totalUnseenMessageCount,
+            'contacts' => $contacts,
+        ]);
+    }
+    public function todayTasks(Request $request)
+        {
+        $today = Carbon::today()->toDateString();
+        $loggedInUserId = $request->user()->id;
+
+        $tasks = Tasks::select('id_user', 'property', 'created_at')
+            ->whereDate('created_at', $today)
+            ->where('id_user', $loggedInUserId)
+            ->get();
+
+        return response()->json($tasks);
+        
+    }
+    public function getNotifBell(Request $request)
+    {
+    $today = Carbon::today()->toDateString();
+    $loggedInUserId = $request->user()->id;
+
+    $tasksCount = Tasks::where('created_at', '>=', $today)
+        ->where('id_user', $loggedInUserId)
+        ->count();
+    return response()->json($tasksCount);
+    }
+
+
 
 
 

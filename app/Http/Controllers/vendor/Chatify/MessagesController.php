@@ -179,7 +179,7 @@ class MessagesController extends Controller
 
         // if there is no messages yet.
         if ($totalMessages < 1) {
-            $response['messages'] ='<p class="message-hint center-el"><span>Say \'hi\' and start messaging</span></p>';
+            $response['messages'] ='<p class="message-hint center-el"><span>Dites \'salut\' et commencez à envoyer des messages!</span></p>';
             return Response::json($response);
         }
         if (count($messages->items()) < 1) {
@@ -455,11 +455,11 @@ class MessagesController extends Controller
                     $file->storeAs(config('chatify.user_avatar.folder'), $avatar, config('chatify.storage_disk_name'));
                     $success = $update ? 1 : 0;
                 } else {
-                    $msg = "File extension not allowed!";
+                    $msg = "Extension de fichier non autorisée !";
                     $error = 1;
                 }
             } else {
-                $msg = "File size you are trying to upload is too large!";
+                $msg = "La taille du fichier que vous essayez de télécharger est trop grande !";
                 $error = 1;
             }
         }
