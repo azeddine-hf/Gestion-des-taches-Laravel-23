@@ -30,6 +30,7 @@ class ProfileController extends Controller
                            ->count();
         //todo les taches
         $tasks = Tasks::where('is_delete', '=', '0')
+                           ->where('tasks.status', 'en cours')
                            ->where('id_user', $user_id)
                            ->join('users', 'tasks.id_user', '=', 'users.id')
                            ->join('projects', 'tasks.id_projet', '=', 'projects.id')

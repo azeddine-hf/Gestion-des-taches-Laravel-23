@@ -2,6 +2,9 @@
 @section('title','Accueil')
 @section('active','active')
     @section('content')
+    @php
+        $isjustone = false;
+    @endphp
 <br>
     <main class="main-content">
         <div class="contents expanded">
@@ -16,580 +19,326 @@
                                         <h6 class="text-capitalize">tâches d'aujourd'hui</h6>
                                     </div>
                                     <div class="card-body">
-                                    @if($Todaytasks->isEmpty())
-                                            <p>No tasks added today.</p>
-                                    @else
-                                        <ul>
-                                            @foreach($Todaytasks as $task)
-                                                <li>User ID: {{ $task->id_user }}</li>
-                                                <li>Task: {{ $task->desc_task }}</li>
-                                                <hr>
-                                            @endforeach
-                                        </ul>
-                                    @endif
+                                        @if($tasksCount === 0)
+                                            <span style="font-size: 15px" class="badge badge-light rounded-pill pl-2 pr-2 text-white">Les tâches d'aujourd'hui n'ont pas été ajoutées</span>
+                                        @elseif($tasksCount === 1)
+                                            <p>Vous avez <b class="text-white badge badge-warning">une</b> tâche aujourd'hui.</p>
+                                        @else
+                                            <p style="font-size: 18px" class="badge badge-light rounded-pill pl-2 pr-2 text-white">Vous avez <b style="font-size: 18px" class="text-white badge badge-danger">{{ $tasksCount }}</b> tâches aujourd'hui!</p>
+                                        @endif
+                                        <p class="mt-4"><a href="{{url('mes-taches')}}" class="dropdown-wrapper__more">Voir toutes les tâches </a></p>
                                     </div>
                                 </div>
 
                             </div>
+                            <div class="d-flex align-items-center justify-content-center mt-4">
+                                <time datetime="{{ \Carbon\Carbon::now()->locale('fr')->isoFormat('dddd D MMMM YYYY') }}" class="icon text-capitalize">
+                                    <em class="text-capitalize">{{ $today }}</em>
+                                    <strong class="text-capitalize">{{ \Carbon\Carbon::now()->locale('fr')->isoFormat('MMMM') }}</strong>
+                                    <span>{{ \Carbon\Carbon::now()->locale('fr')->isoFormat('D') }}</span>
+                                </time>
+                            </div>
                         </div>
-                        <div class="col-lg-8 mb-25">
 
+                        <button type="reset" class="d-none"></button>
+                        <div class="col-lg-8 mb-25">
                             <div class="card card-overview border-0">
                                 <div class="card-header">
-                                    <h6>Facebook Overview</h6>
-                                    <div class="card-extra">
-                                        <div class="card-tab btn-group nav nav-tabs">
-                                            <a class="btn btn-xs btn-white active border-light" id="f_today-tab" data-toggle="tab" href="#f_overview-today" role="tab" area-controls="f_overview" aria-selected="true">Today</a>
-                                            <a class="btn btn-xs btn-white border-light" id="f_week-tab" data-toggle="tab" href="#f_overview-week" role="tab" area-controls="f_overview" aria-selected="false">Week</a>
-                                            <a class="btn btn-xs btn-white border-light" id="f_month-tab" data-toggle="tab" href="#f_overview-month" role="tab" area-controls="f_overview" aria-selected="false">Month</a>
-                                            <a class="btn btn-xs btn-white border-light" id="f_year-tab" data-toggle="tab" href="#f_overview-year" role="tab" area-controls="f_overview" aria-selected="false">Year</a>
-                                        </div>
+                                    <h6>Tâches de la semaine</h6>
+                                    <div><a href="{{ route('tasks.export') }}" class="btn btn-primary">Export Tasks</a>
                                     </div>
                                 </div>
                                 <div class="card-body pt-0 pb-0">
-                                    <div class="tab-content">
-                                        <div class="tab-pane fade active show" id="f_overview-today" role="" aria-labelledby="f_overview-tab">
-                                            <div class="row">
-                                                <div class="col-lg-6">
-                                                    <div class="card-overview__left">
-                                                        <div class="row">
-                                                            <div class="col-xl-6 col-lg-12 col-md-6">
-                                                                <div class="overview-single">
+                                    <div class="tab-content mb-3">
+                                    <div class="atbd-nav-controller nav-controller-slide">
+                                        <div class="nav-controller-content tab-content">
+                                            <div class="tab-pane fade show active"  id="control2" role="tabpanel" aria-labelledby="control2-tab">
+                                                <div class="tab-slide-content" >
+                                                    <div class="atbd-tab tab-vertical">
+                                                        <ul class="nav nav-tabs vertical-tabs " role="tablist" style="min-width:100px">
+                                                            <li class="nav-item">
+                                                                <a class="nav-link {{($today ==='lundi' ? 'active' : '')}}" id="tab-vertical-1-tab" data-toggle="tab" href="#tab-vertical-1" role="tab" aria-controls="tab-vertical-1" aria-selected="{{($today ==='lundi' ? 'true' : 'false')}}">Lundi</a>
+                                                            </li>
+                                                            <li class="nav-item">
+                                                                <a class="nav-link {{($today ==='mardi' ? 'active' : '')}}" id="tab-vertical-2-tab" data-toggle="tab" href="#tab-vertical-2" role="tab" aria-controls="tab-vertical-2" aria-selected="{{($today ==='mardi' ? 'true' : 'false')}}">Mardi</a>
+                                                            </li>
+                                                            <li class="nav-item">
+                                                                <a class="nav-link {{($today ==='mercredi' ? 'active' : '')}}" id="tab-vertical-3-tab" data-toggle="tab" href="#tab-vertical-3" role="tab" aria-controls="tab-vertical-3" aria-selected="{{($today ==='mercredi' ? 'true' : 'false')}}">Mercredi</a>
+                                                            </li>
+                                                            <li class="nav-item">
+                                                                <a class="nav-link {{($today ==='jeudi' ? 'active' : '')}}" id="tab-vertical-4-tab" data-toggle="tab" href="#tab-vertical-4" role="tab" aria-controls="tab-vertical-4" aria-selected="{{($today ==='jeudi' ? 'true' : 'false')}}">Jeudi</a>
+                                                            </li>
+                                                            <li class="nav-item">
+                                                                <a class="nav-link {{($today ==='vendredi' ? 'active' : '')}}" id="tab-vertical-5-tab" data-toggle="tab" href="#tab-vertical-5" role="tab" aria-controls="tab-vertical-5" aria-selected="{{($today ==='vendredi' ? 'true' : 'false')}}">Vendredi</a>
+                                                            </li>
+                                                            <li class="nav-item">
+                                                                <a class="nav-link {{($today ==='samedi' ? 'active' : '')}}" id="tab-vertical-6-tab" data-toggle="tab" href="#tab-vertical-6" role="tab" aria-controls="tab-vertical-6" aria-selected="{{($today ==='samedi' ? 'true' : 'false')}}">Samedi</a>
+                                                            </li>
+                                                        </ul>
+                                                        <div class="tab-content">
+
+                                                            <div class="tab-pane fade {{($today ==='lundi' ? ' show active' : '')}}" id="tab-vertical-1" role="tabpanel" aria-labelledby="tab-vertical-1-tab">
+                                                                @if($tasksThisWeek->isEmpty())
+                                                                    <span class="atbd-tag tag-transparented tag-light">Aucune tâche</span>
+                                                                @else
+                                                                    <ul>
+                                                                        @foreach($tasksThisWeek as $task)
+                                                                        @if($tasksThisWeek->filter(function($task) {
+                                                                            return \Carbon\Carbon::parse($task->created_at)->locale('fr')->isoFormat('dddd') === 'lundi';
+                                                                        })->isNotEmpty())
+                                                                            @if(\Carbon\Carbon::parse($task->created_at)->locale('fr')->isoFormat('dddd') === 'lundi')
+                                                                                <div class="col-12">
+                                                                                    <li><span class="float-left">{{ substr($task->desc_task, 0, 45) }}...</span>
+
+                                                                                            @if($task->status === 'en cours')
+                                                                                                <span class="atbd-tag tag-transparented tag-warning">{{ $task->status }}</span>
+                                                                                            @else
+                                                                                                <span class="atbd-tag tag-transparented tag-success">{{ $task->status }}</span>
+                                                                                            @endif
 
 
+                                                                                            @if($task->property === 'urgent')
+                                                                                                <span class="atbd-tag tag-transparented tag-danger float-right">{{ $task->property }}</span>
+                                                                                            @else
+                                                                                                <span class="atbd-tag tag-transparented tag-success float-right">{{ $task->property }}</span>
+                                                                                            @endif
 
+                                                                                    </li>
+                                                                                </div>
+                                                                            @endif
+                                                                        @else
+                                                                                @if (!$isjustone)
+                                                                                        <li>Aucune tâche ajoutée pour Lundi</li>
+                                                                                    @php
+                                                                                        $isjustone=true;
+                                                                                    @endphp
+                                                                                @endif
+                                                                            @endif
+                                                                        @endforeach
 
-
-                                                                    <div class="overview-content">
-                                                                        <h1>25,845</h1>
-                                                                        <p>Engaged Users</p>
-                                                                        <div>
-                                                                            <span class="color-success"><i data-feather="trending-up"></i>
-                                                                                <strong>25%</strong></span>
-                                                                            <small>20,641 (prev)</small>
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div class="overview-single__chart">
-                                                                        <div class="parentContainer">
-
-
-                                                                            <div>
-                                                                                <canvas id="lineChartOne"></canvas>
-                                                                            </div>
-
-
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
+                                                                    </ul>
+                                                                @endif
                                                             </div>
-                                                            <div class="col-xl-6 col-lg-12 col-md-6 br-1">
-                                                                <div class="overview-single">
+                                                            <div class="tab-pane fade {{($today ==='mardi' ? 'show active' : '')}}" id="tab-vertical-2" role="tabpanel" aria-labelledby="tab-vertical-2-tab">
+                                                                @if($tasksThisWeek->isEmpty())
+                                                                    <span class="atbd-tag tag-transparented tag-light">Aucune tâche</span>
+                                                                @else
+                                                                    <ul>
+
+                                                                        @foreach($tasksThisWeek as $task)
+                                                                        @if($tasksThisWeek->filter(function($task) {
+                                                                                        return \Carbon\Carbon::parse($task->created_at)->locale('fr')->isoFormat('dddd') === 'mardi';
+                                                                                    })->isNotEmpty())
+                                                                                @if(\Carbon\Carbon::parse($task->created_at)->locale('fr')->isoFormat('dddd') === 'mardi')
+                                                                                    <div class="col-12">
+                                                                                        <li><span class="float-left">{{ substr($task->desc_task, 0, 45) }}...</span>
+
+                                                                                                @if($task->status === 'en cours')
+                                                                                                    <span class="atbd-tag tag-transparented tag-warning">{{ $task->status }}</span>
+                                                                                                @else
+                                                                                                    <span class="atbd-tag tag-transparented tag-success">{{ $task->status }}</span>
+                                                                                                @endif
 
 
+                                                                                                @if($task->property === 'urgent')
+                                                                                                    <span class="atbd-tag tag-transparented tag-danger float-right">{{ $task->property }}</span>
+                                                                                                @else
+                                                                                                    <span class="atbd-tag tag-transparented tag-success float-right">{{ $task->property }}</span>
+                                                                                                @endif
 
-
-
-                                                                    <div class="overview-content">
-                                                                        <h1>2,534</h1>
-                                                                        <p>Page Impressions</p>
-                                                                        <div>
-                                                                            <span class="color-success"><i data-feather="trending-up"></i>
-                                                                                <strong>40%</strong></span>
-                                                                            <small>20,641 (prev)</small>
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div class="overview-single__chart">
-                                                                        <div class="parentContainer">
-
-                                                                            <button type="reset"></button>
-                                                                            <div>
-                                                                                <canvas id="lineChartTwo"></canvas>
-                                                                            </div>
-
-
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
+                                                                                        </li>
+                                                                                    </div>
+                                                                                @endif
+                                                                            @else
+                                                                                @if (!$isjustone)
+                                                                                        <li>Aucune tâche ajoutée pour Mardi</li>
+                                                                                    @php
+                                                                                        $isjustone=true;
+                                                                                    @endphp
+                                                                                @endif
+                                                                            @endif
+                                                                        @endforeach
+                                                                    </ul>
+                                                                @endif
                                                             </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-6">
-                                                    <div class="card-overview__right">
-                                                        <div class="row">
-                                                            <div class="col-xl-6 col-lg-12 col-md-6">
-                                                                <div class="overview-single">
+                                                            <div class="tab-pane fade {{($today ==='mercredi' ? ' show active' : '')}}" id="tab-vertical-3" role="tabpanel" aria-labelledby="tab-vertical-3-tab">
+                                                                @if($tasksThisWeek->isEmpty())
+                                                                    <span class="atbd-tag tag-transparented tag-light">Aucune tâche</span>
+                                                                @else
+                                                                    <ul>
+                                                                        @php
+                                                                            $isjustone=false;
+                                                                        @endphp
+                                                                        @foreach($tasksThisWeek as $task)
+                                                                            @if($tasksThisWeek->filter(function($task) {
+                                                                                    return \Carbon\Carbon::parse($task->created_at)->locale('fr')->isoFormat('dddd') === 'mercredi';
+                                                                                })->isNotEmpty())
+                                                                                @if(\Carbon\Carbon::parse($task->created_at)->locale('fr')->isoFormat('dddd') === 'mercredi')
+                                                                                    <div class="col-12">
+                                                                                        <li><span class="float-left">{{ substr($task->desc_task, 0, 45) }}...</span>
+
+                                                                                                @if($task->status === 'en cours')
+                                                                                                    <span class="atbd-tag tag-transparented tag-warning">{{ $task->status }}</span>
+                                                                                                @else
+                                                                                                    <span class="atbd-tag tag-transparented tag-success">{{ $task->status }}</span>
+                                                                                                @endif
 
 
+                                                                                                @if($task->property === 'urgent')
+                                                                                                    <span class="atbd-tag tag-transparented tag-danger float-right">{{ $task->property }}</span>
+                                                                                                @else
+                                                                                                    <span class="atbd-tag tag-transparented tag-success float-right">{{ $task->property }}</span>
+                                                                                                @endif
 
-
-
-                                                                    <div class="overview-content">
-                                                                        <h1>2,142</h1>
-                                                                        <p>Total Page Likes</p>
-                                                                        <div>
-                                                                            <span class="color-danger"><i data-feather="trending-down"></i>
-                                                                                <strong>15%</strong></span>
-                                                                            <small>20,641 (prev)</small>
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div class="overview-single__chart">
-                                                                        <div class="parentContainer">
-
-
-                                                                            <div>
-                                                                                <canvas id="lineChartThree"></canvas>
-                                                                            </div>
-
-
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
+                                                                                        </li>
+                                                                                    </div>
+                                                                                @endif
+                                                                            @else
+                                                                                @if (!$isjustone)
+                                                                                        <li>Aucune tâche ajoutée pour Mercredi</li>
+                                                                                    @php
+                                                                                        $isjustone=true;
+                                                                                    @endphp
+                                                                                @endif
+                                                                            @endif
+                                                                        @endforeach
+                                                                    </ul>
+                                                                @endif
                                                             </div>
-                                                            <div class="col-xl-6 col-lg-12 col-md-6 co-last">
-                                                                <div class="overview-single">
+                                                            <div class="tab-pane fade {{($today ==='jeudi' ? ' show active' : '')}}" id="tab-vertical-4" role="tabpanel" aria-labelledby="tab-vertical-4-tab">
+                                                                @if($tasksThisWeek->isEmpty())
+                                                                    <span class="atbd-tag tag-transparented tag-light">Aucune tâche</span>
+                                                                @else
+                                                                    <ul>
+                                                                        @php
+                                                                            $isjustone=false;
+                                                                        @endphp
+                                                                        @foreach($tasksThisWeek as $task)
+                                                                            @if($tasksThisWeek->filter(function($task) {
+                                                                                return \Carbon\Carbon::parse($task->created_at)->locale('fr')->isoFormat('dddd') === 'jeudi';
+                                                                            })->isNotEmpty())
+                                                                                @if(\Carbon\Carbon::parse($task->created_at)->locale('fr')->isoFormat('dddd') === 'jeudi')
+                                                                                    <div class="col-12">
+                                                                                        <li><span class="float-left">{{ substr($task->desc_task, 0, 45) }}...</span>
+
+                                                                                                @if($task->status === 'en cours')
+                                                                                                    <span class="atbd-tag tag-transparented tag-warning">{{ $task->status }}</span>
+                                                                                                @else
+                                                                                                    <span class="atbd-tag tag-transparented tag-success">{{ $task->status }}</span>
+                                                                                                @endif
 
 
+                                                                                                @if($task->property === 'urgent')
+                                                                                                    <span class="atbd-tag tag-transparented tag-danger float-right">{{ $task->property }}</span>
+                                                                                                @else
+                                                                                                    <span class="atbd-tag tag-transparented tag-success float-right">{{ $task->property }}</span>
+                                                                                                @endif
 
-
-
-                                                                    <div class="overview-content">
-                                                                        <h1>1,132</h1>
-                                                                        <p>New Page LIke</p>
-                                                                        <div>
-                                                                            <span class="color-success"><i data-feather="trending-up"></i>
-                                                                                <strong>13%</strong></span>
-                                                                            <small>20,641 (prev)</small>
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div class="overview-single__chart">
-                                                                        <div class="parentContainer">
-
-
-                                                                            <div>
-                                                                                <canvas id="lineChartFour"></canvas>
-                                                                            </div>
-
-
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
+                                                                                        </li>
+                                                                                    </div>
+                                                                                @endif
+                                                                            @else
+                                                                                @if (!$isjustone)
+                                                                                        <li>Aucune tâche ajoutée pour Jeudi</li>
+                                                                                    @php
+                                                                                        $isjustone=true;
+                                                                                    @endphp
+                                                                                @endif
+                                                                            @endif
+                                                                        @endforeach
+                                                                    </ul>
+                                                                @endif
                                                             </div>
-                                                        </div>
-                                                    </div>
+                                                            <div class="tab-pane fade {{($today ==='vendredi' ? ' show active' : '')}}" id="tab-vertical-5" role="tabpanel" aria-labelledby="tab-vertical-5-tab">
+                                                                @if($tasksThisWeek->isEmpty())
+                                                                    <span class="atbd-tag tag-transparented tag-light">Aucune tâche</span>
+                                                                @else
+                                                                    <ul>
+                                                                        @php
+                                                                            $isjustone=false;
+                                                                        @endphp
+                                                                        @foreach($tasksThisWeek as $task)
+                                                                            @if($tasksThisWeek->filter(function($task) {
+                                                                                    return \Carbon\Carbon::parse($task->created_at)->locale('fr')->isoFormat('dddd') === 'vendredi';
+                                                                                })->isNotEmpty())
+                                                                                @if(\Carbon\Carbon::parse($task->created_at)->locale('fr')->isoFormat('dddd') === 'vendredi')
+                                                                                    <div class="col-12">
+                                                                                        <li><span class="float-left">{{ substr($task->desc_task, 0, 45) }}...</span>
 
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="tab-pane fade" id="f_overview-week" role="" aria-labelledby="f_overview-tab">
-                                            <div class="row">
-                                                <div class="col-lg-6">
-                                                    <div class="card-overview__left">
-                                                        <div class="row">
-                                                            <div class="col-xl-6 col-lg-12 col-md-6">
-                                                                <div class="overview-single">
+                                                                                                @if($task->status === 'en cours')
+                                                                                                    <span class="atbd-tag tag-transparented tag-warning">{{ $task->status }}</span>
+                                                                                                @else
+                                                                                                    <span class="atbd-tag tag-transparented tag-success">{{ $task->status }}</span>
+                                                                                                @endif
 
+                                                                                                @if($task->property === 'urgent')
+                                                                                                    <span class="atbd-tag tag-transparented tag-danger float-right">{{ $task->property }}</span>
+                                                                                                @else
+                                                                                                    <span class="atbd-tag tag-transparented tag-success float-right">{{ $task->property }}</span>
+                                                                                                @endif
 
-
-
-
-                                                                    <div class="overview-content">
-                                                                        <h1>25,845</h1>
-                                                                        <p>Engaged Users</p>
-                                                                        <div>
-                                                                            <span class="color-success"><i data-feather="trending-up"></i>
-                                                                                <strong>25%</strong></span>
-                                                                            <small>20,641 (prev)</small>
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div class="overview-single__chart">
-                                                                        <div class="parentContainer">
-
-
-                                                                            <div>
-                                                                                <canvas id="lineChartFive"></canvas>
-                                                                            </div>
-
-
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
+                                                                                        </li>
+                                                                                    </div>
+                                                                                @endif
+                                                                            @else
+                                                                                @if (!$isjustone)
+                                                                                        <li>Aucune tâche ajoutée pour Vendredi</li>
+                                                                                    @php
+                                                                                        $isjustone=true;
+                                                                                    @endphp
+                                                                                @endif
+                                                                            @endif
+                                                                        @endforeach
+                                                                    </ul>
+                                                                @endif
                                                             </div>
-                                                            <div class="col-xl-6 col-lg-12 col-md-6 br-1">
-                                                                <div class="overview-single">
+                                                            <div class="tab-pane fade {{($today ==='samedi' ? ' show active' : '')}}" id="tab-vertical-6" role="tabpanel" aria-labelledby="tab-vertical-6-tab">
+                                                                @if($tasksThisWeek->isEmpty())
+                                                                    <span class="atbd-tag tag-transparented tag-light">Aucune tâche</span>
+                                                                @else
+                                                                    <ul>
+                                                                        @php
+                                                                            $isjustone=false;
+                                                                        @endphp
+                                                                        @foreach($tasksThisWeek as $task)
+                                                                            @if($tasksThisWeek->filter(function($task) {
+                                                                                    return \Carbon\Carbon::parse($task->created_at)->locale('fr')->isoFormat('dddd') === 'samedi';
+                                                                                })->isNotEmpty())
+                                                                                @if(\Carbon\Carbon::parse($task->created_at)->locale('fr')->isoFormat('dddd') === 'samedi')
+                                                                                    <div class="col-12">
+                                                                                        <li><span class="float-left">{{ substr($task->desc_task, 0, 45) }}...</span>
+
+                                                                                                @if($task->status === 'en cours')
+                                                                                                    <span class="atbd-tag tag-transparented tag-warning">{{ $task->status }}</span>
+                                                                                                @else
+                                                                                                    <span class="atbd-tag tag-transparented tag-success">{{ $task->status }}</span>
+                                                                                                @endif
 
 
+                                                                                                @if($task->property === 'urgent')
+                                                                                                    <span class="atbd-tag tag-transparented tag-danger float-right">{{ $task->property }}</span>
+                                                                                                @else
+                                                                                                    <span class="atbd-tag tag-transparented tag-success float-right">{{ $task->property }}</span>
+                                                                                                @endif
 
-
-
-                                                                    <div class="overview-content">
-                                                                        <h1>92,534</h1>
-                                                                        <p>Page Impressions</p>
-                                                                        <div>
-                                                                            <span class="color-success"><i data-feather="trending-up"></i>
-                                                                                <strong>26%</strong></span>
-                                                                            <small>20,641 (prev)</small>
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div class="overview-single__chart">
-                                                                        <div class="parentContainer">
-
-
-                                                                            <div>
-                                                                                <canvas id="lineChartSix"></canvas>
-                                                                            </div>
-
-
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
+                                                                                        </li>
+                                                                                    </div>
+                                                                                @endif
+                                                                            @else
+                                                                                @if (!$isjustone)
+                                                                                        <li>Aucune tâche ajoutée pour Samedi</li>
+                                                                                    @php
+                                                                                        $isjustone=true;
+                                                                                    @endphp
+                                                                                @endif
+                                                                            @endif
+                                                                        @endforeach
+                                                                    </ul>
+                                                                @endif
                                                             </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-6">
-                                                    <div class="card-overview__right">
-                                                        <div class="row">
-                                                            <div class="col-xl-6 col-lg-12 col-md-6">
-                                                                <div class="overview-single">
 
 
 
-
-
-                                                                    <div class="overview-content">
-                                                                        <h1>9,142</h1>
-                                                                        <p>Total Page Likes</p>
-                                                                        <div>
-                                                                            <span class="color-danger"><i data-feather="trending-down"></i>
-                                                                                <strong>23%</strong></span>
-                                                                            <small>20,641 (prev)</small>
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div class="overview-single__chart">
-                                                                        <div class="parentContainer">
-
-
-                                                                            <div>
-                                                                                <canvas id="lineChartSeven"></canvas>
-                                                                            </div>
-
-
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-xl-6 col-lg-12 col-md-6 co-last">
-                                                                <div class="overview-single">
-
-
-
-
-
-                                                                    <div class="overview-content">
-                                                                        <h1>432</h1>
-                                                                        <p>New Page LIke</p>
-                                                                        <div>
-                                                                            <span class="color-success"><i data-feather="trending-up"></i>
-                                                                                <strong>44%</strong></span>
-                                                                            <small>20,641 (prev)</small>
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div class="overview-single__chart">
-                                                                        <div class="parentContainer">
-
-
-                                                                            <div>
-                                                                                <canvas id="lineChartEight"></canvas>
-                                                                            </div>
-
-
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="tab-pane fade" id="f_overview-month" role="" aria-labelledby="f_overview-tab">
-                                            <div class="row">
-                                                <div class="col-lg-6">
-                                                    <div class="card-overview__left">
-                                                        <div class="row">
-                                                            <div class="col-xl-6 col-lg-12 col-md-6">
-                                                                <div class="overview-single">
-
-
-
-
-
-                                                                    <div class="overview-content">
-                                                                        <h1>25,845</h1>
-                                                                        <p>Engaged Users</p>
-                                                                        <div>
-                                                                            <span class="color-success"><i data-feather="trending-up"></i>
-                                                                                <strong>25%</strong></span>
-                                                                            <small>20,641 (prev)</small>
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div class="overview-single__chart">
-                                                                        <div class="parentContainer">
-
-
-                                                                            <div>
-                                                                                <canvas id="lineChartNine"></canvas>
-                                                                            </div>
-
-
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-xl-6 col-lg-12 col-md-6 br-1">
-                                                                <div class="overview-single">
-
-
-
-
-
-                                                                    <div class="overview-content">
-                                                                        <h1>492,534</h1>
-                                                                        <p>Page Impressions</p>
-                                                                        <div>
-                                                                            <span class="color-success"><i data-feather="trending-up"></i>
-                                                                                <strong>36%</strong></span>
-                                                                            <small>20,641 (prev)</small>
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div class="overview-single__chart">
-                                                                        <div class="parentContainer">
-
-
-                                                                            <div>
-                                                                                <canvas id="lineChartTen"></canvas>
-                                                                            </div>
-
-
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-6">
-                                                    <div class="card-overview__right">
-                                                        <div class="row">
-                                                            <div class="col-xl-6 col-lg-12 col-md-6">
-                                                                <div class="overview-single">
-
-
-
-
-
-                                                                    <div class="overview-content">
-                                                                        <h1>12,142</h1>
-                                                                        <p>Total Page Likes</p>
-                                                                        <div>
-                                                                            <span class="color-danger"><i data-feather="trending-down"></i>
-                                                                                <strong>13%</strong></span>
-                                                                            <small>20,641 (prev)</small>
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div class="overview-single__chart">
-                                                                        <div class="parentContainer">
-
-
-                                                                            <div>
-                                                                                <canvas id="lineChartEleven"></canvas>
-                                                                            </div>
-
-
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-xl-6 col-lg-12 col-md-6 co-last">
-                                                                <div class="overview-single">
-
-
-
-
-
-                                                                    <div class="overview-content">
-                                                                        <h1>1,432</h1>
-                                                                        <p>New Page LIke</p>
-                                                                        <div>
-                                                                            <span class="color-success"><i data-feather="trending-up"></i>
-                                                                                <strong>14%</strong></span>
-                                                                            <small>20,641 (prev)</small>
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div class="overview-single__chart">
-                                                                        <div class="parentContainer">
-
-
-                                                                            <div>
-                                                                                <canvas id="lineChartTwelve"></canvas>
-                                                                            </div>
-
-
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="tab-pane fade" id="f_overview-year" role="" aria-labelledby="f_overview-tab">
-                                            <div class="row">
-                                                <div class="col-lg-6">
-                                                    <div class="card-overview__left">
-                                                        <div class="row">
-                                                            <div class="col-xl-6 col-lg-12 col-md-6">
-                                                                <div class="overview-single">
-
-
-
-
-
-                                                                    <div class="overview-content">
-                                                                        <h1>25,845</h1>
-                                                                        <p>Engaged Users</p>
-                                                                        <div>
-                                                                            <span class="color-success"><i data-feather="trending-up"></i>
-                                                                                <strong>25%</strong></span>
-                                                                            <small>20,641 (prev)</small>
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div class="overview-single__chart">
-                                                                        <div class="parentContainer">
-
-
-                                                                            <div>
-                                                                                <canvas id="lineChartThirteen"></canvas>
-                                                                            </div>
-
-
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-xl-6 col-lg-12 col-md-6 br-1">
-                                                                <div class="overview-single">
-
-
-
-
-
-                                                                    <div class="overview-content">
-                                                                        <h1>492,534</h1>
-                                                                        <p>Page Impressions</p>
-                                                                        <div>
-                                                                            <span class="color-success"><i data-feather="trending-up"></i>
-                                                                                <strong>36%</strong></span>
-                                                                            <small>20,641 (prev)</small>
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div class="overview-single__chart">
-                                                                        <div class="parentContainer">
-
-
-                                                                            <div>
-                                                                                <canvas id="lineChartFourteen"></canvas>
-                                                                            </div>
-
-
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-6">
-                                                    <div class="card-overview__right">
-                                                        <div class="row">
-                                                            <div class="col-xl-6 col-lg-12 col-md-6">
-                                                                <div class="overview-single">
-
-
-
-
-
-                                                                    <div class="overview-content">
-                                                                        <h1>12,142</h1>
-                                                                        <p>Total Page Likes</p>
-                                                                        <div>
-                                                                            <span class="color-danger"><i data-feather="trending-down"></i>
-                                                                                <strong>13%</strong></span>
-                                                                            <small>20,641 (prev)</small>
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div class="overview-single__chart">
-                                                                        <div class="parentContainer">
-
-
-                                                                            <div>
-                                                                                <canvas id="lineChartFifteen"></canvas>
-                                                                            </div>
-
-
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-xl-6 col-lg-12 col-md-6 co-last">
-                                                                <div class="overview-single">
-
-
-
-
-
-                                                                    <div class="overview-content">
-                                                                        <h1>1,432</h1>
-                                                                        <p>New Page LIke</p>
-                                                                        <div>
-                                                                            <span class="color-success"><i data-feather="trending-up"></i>
-                                                                                <strong>14%</strong></span>
-                                                                            <small>20,641 (prev)</small>
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div class="overview-single__chart">
-                                                                        <div class="parentContainer">
-
-
-                                                                            <div>
-                                                                                <canvas id="lineChartSixteen"></canvas>
-                                                                            </div>
-
-
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
                                                         </div>
                                                     </div>
 
@@ -598,119 +347,49 @@
                                         </div>
                                     </div>
 
-                                    <!-- ends: .row -->
+                                    </div>
+                                    <div class="mt-8 mb-4"><a href="{{url('mes-taches')}}" class="dropdown-wrapper__more">Voir toutes les tâches </a></div>
+
                                 </div>
                             </div>
-
                         </div>
-                        <div class="col-xxl-4 col-md-6 mb-25">
+
+                        <div class="col-xxl-4 col-md-4 mb-25">
 
                             <div class="card border-0">
                                 <div class="card-header">
-                                    <h6>Youtube Subscribers</h6>
-                                    <div class="card-extra">
-                                        <ul class="card-tab-links nav-tabs nav">
-                                            <li>
-                                                <a href="#y_subscriber-week" class="active" data-toggle="tab" id="ys_week-tab" role="tab" area-controls="y_subscriber" aria-selected="true">Week</a>
-                                            </li>
-                                            <li>
-                                                <a href="#y_subscriber-month" data-toggle="tab" id="ys_month-tab" role="tab" area-controls="y_subscriber" aria-selected="false">Month</a>
-                                            </li>
-                                            <li>
-                                                <a href="#y_subscriber-year" id="ys_year-tab" data-toggle="tab" role="tab" area-controls="y_subscriber" aria-selected="false">Year</a>
-                                            </li>
-                                        </ul>
-                                    </div>
+                                    <h6>Status de mes Tȃches</h6>
                                 </div>
                                 <div class="card-body">
-                                    <div class="tab-content">
-                                        <div class="tab-pane fade show active" id="y_subscriber-week" role="tabpanel" aria-labelledby="y_subscriber-week">
-                                            <div class="card-chart-bar d-flex justify-content-between">
-                                                <div class="card-bar-top">
-                                                    <p>Subscribers</p>
-                                                    <h3 class="card-bar-info d-flex align-items-end">25,472
-                                                        <sub class="color-success">
-                                                            <i data-feather="arrow-up"></i> 25%</sub>
-                                                    </h3>
-                                                </div>
-                                                <ul class="legend-static">
-                                                    <li class="custom-label">
-                                                        <span style="background-color: rgb(95, 99, 242);"></span>Gained
-                                                    </li>
-                                                    <li class="custom-label">
-                                                        <span style="background-color: rgb(255, 77, 79);"></span>Lost
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                            <div class="card-chart">
-                                                <div class="parentContainer">
-
-
-                                                    <div>
-                                                        <canvas id="ys_barChartOne"></canvas>
+                                    <div class="col-12">
+                                        @php
+                                            $tasksInProgressCount = $taskAll->where('status', 'en cours')->count();
+                                            $tasksCompletedCount = $taskAll->where('status', 'terminé')->count();
+                                        @endphp
+                                        <div class="col-xl-12">
+                                            <div class="" style="border-radius: 20px;">
+                                                <div class="">
+                                                    <div class="float-right">
+                                                        <span data-feather="check-square" class="text-success" width="40" height="40"></span>
                                                     </div>
-
-
+                                                    <div>
+                                                        <h4 class="mb-1 mt-1 text-success"><span id="task_done">{{$tasksCompletedCount}}</span></h4>
+                                                        <span class="badge badge-success pl-2 pr-2 rounded-pill" style="font-size: 15px;">Tȃches Terminé</span>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="tab-pane fade" id="y_subscriber-month" role="tabpanel" aria-labelledby="y_subscriber-week">
-                                            <div class="card-chart-bar d-flex justify-content-between">
-                                                <div class="card-bar-top">
-                                                    <p>Subscribers</p>
-                                                    <h3 class="card-bar-info d-flex align-items-end">75,582
-                                                        <sub class="color-success">
-                                                            <i data-feather="arrow-up"></i> 45%</sub>
-                                                    </h3>
-                                                </div>
-                                                <ul class="legend-static">
-                                                    <li class="custom-label">
-                                                        <span style="background-color: rgb(95, 99, 242);"></span>Gained
-                                                    </li>
-                                                    <li class="custom-label">
-                                                        <span style="background-color: rgb(255, 77, 79);"></span>Lost
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                            <div class="card-chart">
-                                                <div class="parentContainer">
-
-
-                                                    <div>
-                                                        <canvas id="ys_barChartTwo"></canvas>
+                                        <hr class="mt-4 mb-4">
+                                        <div class="col-xl-12">
+                                            <div class="" style="border-radius: 20px;">
+                                                <div class="">
+                                                    <div class="float-right">
+                                                        <span data-feather="clock" class="text-warning" width="40" height="40"></span>
                                                     </div>
-
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="tab-pane fade" id="y_subscriber-year" role="tabpanel" aria-labelledby="y_subscriber-week">
-                                            <div class="card-chart-bar d-flex justify-content-between">
-                                                <div class="card-bar-top">
-                                                    <p>Subscribers</p>
-                                                    <h3 class="card-bar-info d-flex align-items-end">124,892
-                                                        <sub class="color-success">
-                                                            <i data-feather="arrow-up"></i> 65%</sub>
-                                                    </h3>
-                                                </div>
-                                                <ul class="legend-static">
-                                                    <li class="custom-label">
-                                                        <span style="background-color: rgb(95, 99, 242);"></span>Gained
-                                                    </li>
-                                                    <li class="custom-label">
-                                                        <span style="background-color: rgb(255, 77, 79);"></span>Lost
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                            <div class="card-chart">
-                                                <div class="parentContainer">
-
-
                                                     <div>
-                                                        <canvas id="ys_barChartThree"></canvas>
+                                                        <h4 class="mb-1 mt-1 text-warning"><span id="task_done">{{$tasksInProgressCount}}</span></h4>
+                                                        <span class="badge badge-warning text-white pl-2 pr-2 rounded-pill" style="font-size: 15px;">Tȃches En Cours</span>
                                                     </div>
-
-
                                                 </div>
                                             </div>
                                         </div>
@@ -720,361 +399,46 @@
                             </div>
 
                         </div>
-                        <div class="col-xxl-4 col-md-6 mb-25">
+                        <div class="col-8 mailbox-lis">
 
-                            <div class="card border-0">
+                            <div class="card">
                                 <div class="card-header">
-                                    <h6>Twitter Overview</h6>
-                                    <div class="card-extra">
-                                        <ul class="card-tab-links nav-tabs nav">
-                                            <li>
-                                                <a class="active" href="#to_week" data-toggle="tab" id="to_week-tab" role="tab" area-controls="to_week" aria-selected="true">Week</a>
-                                            </li>
-                                            <li>
-                                                <a href="#to_month" data-toggle="tab" id="to_month-tab" role="tab" area-controls="to_month" aria-selected="false">Month</a>
-                                            </li>
-                                            <li>
-                                                <a href="#to_year" data-toggle="tab" id="to_year-tab" role="tab" area-controls="to_year" aria-selected="false">Year</a>
-                                            </li>
-                                        </ul>
-                                    </div>
+                                    <h6>Messages de l'administrateur</h6>
                                 </div>
-                                <div class="card-body linechart-overview-wrap">
-                                    <div class="tab-content">
-                                        <div class="tab-pane fade active show" id="to_week" role="tabpanel" aria-labelledby="to_week-tab">
-                                            <div class="d-flex flex-wrap justify-content-between align-items-end mb-3">
-                                                <div class="chart-desc">
-                                                    <span>Tweets</span>
-                                                    <p class="m-0">
-                                                        <strong>278</strong>
-                                                        <sub class="color-success">
-                                                            <i class="la la-arrow-up"></i> 14%</sub>
-                                                    </p>
-                                                </div>
-                                                <div class="border-line-chart">
-                                                    <div class="parentContainer">
-
-
-                                                        <div>
-                                                            <canvas id="lineChartSharpOne"></canvas>
-                                                        </div>
-
-
-                                                    </div>
+                                <div class="card-body">
+                                @if ($contacts->isEmpty())
+                                    <span class="badge badge-transparent badge-round">Vous n'avez pas de Nouveau message de l'administrateur</span>
+                                @else
+                                    @foreach($contacts as $contact)
+                                        <div class="mailbox-list__single d-flex justify-content-between">
+                                            <div class="mail-authorBox d-flex flex-grow-0">
+                                                <span class="auhor-info">
+                                                    <a href="{{url('chat/'. $contact['id'])}}"
+                                                    class="profile-image rounded-circle d-block m-0 wh-70"
+                                                    style="background-image:url('{{ asset('/import/profileImg/'.$contact['profile']) }}'); background-size: cover;"></a>
+                                                </span>
+                                            </div>
+                                            <div class="mail-content flex-grow-1 ml-3">
+                                                <div class="mail-content__top">
+                                                    <h6 class="mail-title">
+                                                        <a href="{{url('chat/'. $contact['id'])}}" class="text-capitalize">{{ $contact['name'] }} {{ $contact['lname'] }}</a>
+                                                        <span class="badge badge-transparent badge-round">Nouveau message!</span>
+                                                    </h6>
+                                                    <p class="ml-2 fw-500">{{ $contact['msg'] }}</p>
                                                 </div>
                                             </div>
-                                            <div class="d-flex flex-wrap justify-content-between align-items-end mb-3">
-                                                <div class="chart-desc">
-                                                    <span>Tweet Impressions</span>
-                                                    <p class="m-0">
-                                                        <strong>78.8k</strong>
-                                                        <sub class="color-success">
-                                                            <i class="la la-arrow-up"></i> 14%</sub>
-                                                    </p>
-                                                </div>
-                                                <div class="border-line-chart">
-                                                    <div class="parentContainer">
-
-
-                                                        <div>
-                                                            <canvas id="lineChartSharpTwo"></canvas>
-                                                        </div>
-
-
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="d-flex flex-wrap justify-content-between align-items-end mb-3">
-                                                <div class="chart-desc">
-                                                    <span>New Followers</span>
-                                                    <p class="m-0">
-                                                        <strong>3,015</strong>
-                                                        <sub class="color-danger">
-                                                            <i class="la la-arrow-down"></i> 14%</sub>
-                                                    </p>
-                                                </div>
-                                                <div class="border-line-chart">
-                                                    <div class="parentContainer">
-
-
-                                                        <div>
-                                                            <canvas id="lineChartSharpThree"></canvas>
-                                                        </div>
-
-
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="d-flex flex-wrap justify-content-between align-items-end mb-3">
-                                                <div class="chart-desc">
-                                                    <span>Engagement Rates</span>
-                                                    <p class="m-0">
-                                                        <strong>5.2</strong>
-                                                        <sub class="color-success">
-                                                            <i class="la la-arrow-up"></i> 14%</sub>
-                                                    </p>
-                                                </div>
-                                                <div class="border-line-chart">
-                                                    <div class="parentContainer">
-
-
-                                                        <div>
-                                                            <canvas id="lineChartSharpFour"></canvas>
-                                                        </div>
-
-
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="d-flex flex-wrap justify-content-between align-items-end">
-                                                <div class="chart-desc">
-                                                    <span>Retweets</span>
-                                                    <p class="m-0">
-                                                        <strong>8,625</strong>
-                                                        <sub class="color-danger">
-                                                            <i class="la la-arrow-down"></i> 14%</sub>
-                                                    </p>
-                                                </div>
-                                                <div class="border-line-chart">
-                                                    <div class="parentContainer">
-
-
-                                                        <div>
-                                                            <canvas id="lineChartSharpFive"></canvas>
-                                                        </div>
-
-
-                                                    </div>
-                                                </div>
-                                            </div>
+                                            <span class="time-meta text-success">
+                                                {{$contact['formattedDate']}}
+                                            </span>
                                         </div>
-                                        <div class="tab-pane fade" id="to_month" role="tabpanel" aria-labelledby="to_month-tab">
-                                            <div class="d-flex flex-wrap justify-content-between align-items-end mb-3">
-                                                <div class="chart-desc">
-                                                    <span>Tweets</span>
-                                                    <p class="m-0">
-                                                        <strong>378</strong>
-                                                        <sub class="color-success">
-                                                            <i class="la la-arrow-up"></i> 14%</sub>
-                                                    </p>
-                                                </div>
-                                                <div class="border-line-chart">
-                                                    <div class="parentContainer">
-
-
-                                                        <div>
-                                                            <canvas id="lineChartSharpOneM"></canvas>
-                                                        </div>
-
-
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="d-flex flex-wrap justify-content-between align-items-end mb-3">
-                                                <div class="chart-desc">
-                                                    <span>Tweet Impressions</span>
-                                                    <p class="m-0">
-                                                        <strong>88.8k</strong>
-                                                        <sub class="color-success">
-                                                            <i class="la la-arrow-up"></i> 14%</sub>
-                                                    </p>
-                                                </div>
-                                                <div class="border-line-chart">
-                                                    <div class="parentContainer">
-
-
-                                                        <div>
-                                                            <canvas id="lineChartSharpTwoM"></canvas>
-                                                        </div>
-
-
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="d-flex flex-wrap justify-content-between align-items-end mb-3">
-                                                <div class="chart-desc">
-                                                    <span>New Followers</span>
-                                                    <p class="m-0">
-                                                        <strong>4,417</strong>
-                                                        <sub class="color-danger">
-                                                            <i class="la la-arrow-down"></i> 14%</sub>
-                                                    </p>
-                                                </div>
-                                                <div class="border-line-chart">
-                                                    <div class="parentContainer">
-
-
-                                                        <div>
-                                                            <canvas id="lineChartSharpThreeM"></canvas>
-                                                        </div>
-
-
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="d-flex flex-wrap justify-content-between align-items-end mb-3">
-                                                <div class="chart-desc">
-                                                    <span>Engagement Rates</span>
-                                                    <p class="m-0">
-                                                        <strong>7.2</strong>
-                                                        <sub class="color-success">
-                                                            <i class="la la-arrow-up"></i> 14%</sub>
-                                                    </p>
-                                                </div>
-                                                <div class="border-line-chart">
-                                                    <div class="parentContainer">
-
-
-                                                        <div>
-                                                            <canvas id="lineChartSharpFourM"></canvas>
-                                                        </div>
-
-
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="d-flex flex-wrap justify-content-between align-items-end">
-                                                <div class="chart-desc">
-                                                    <span>Retweets</span>
-                                                    <p class="m-0">
-                                                        <strong>10,625</strong>
-                                                        <sub class="color-danger">
-                                                            <i class="la la-arrow-down"></i> 14%</sub>
-                                                    </p>
-                                                </div>
-                                                <div class="border-line-chart">
-                                                    <div class="parentContainer">
-
-
-                                                        <div>
-                                                            <canvas id="lineChartSharpFiveM"></canvas>
-                                                        </div>
-
-
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="tab-pane fade" id="to_year" role="tabpanel" aria-labelledby="to_year-tab">
-                                            <div class="d-flex flex-wrap justify-content-between align-items-end mb-3">
-                                                <div class="chart-desc">
-                                                    <span>Tweets</span>
-                                                    <p class="m-0">
-                                                        <strong>578</strong>
-                                                        <sub class="color-success">
-                                                            <i class="la la-arrow-up"></i> 14%</sub>
-                                                    </p>
-                                                </div>
-                                                <div class="border-line-chart">
-                                                    <div class="parentContainer">
-
-
-                                                        <div>
-                                                            <canvas id="lineChartSharpOneY"></canvas>
-                                                        </div>
-
-
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="d-flex flex-wrap justify-content-between align-items-end mb-3">
-                                                <div class="chart-desc">
-                                                    <span>Tweet Impressions</span>
-                                                    <p class="m-0">
-                                                        <strong>78.8k</strong>
-                                                        <sub class="color-success">
-                                                            <i class="la la-arrow-up"></i> 14%</sub>
-                                                    </p>
-                                                </div>
-                                                <div class="border-line-chart">
-                                                    <div class="parentContainer">
-
-
-                                                        <div>
-                                                            <canvas id="lineChartSharpTwoY"></canvas>
-                                                        </div>
-
-
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="d-flex flex-wrap justify-content-between align-items-end mb-3">
-                                                <div class="chart-desc">
-                                                    <span>New Followers</span>
-                                                    <p class="m-0">
-                                                        <strong>3,015</strong>
-                                                        <sub class="color-danger">
-                                                            <i class="la la-arrow-down"></i> 14%</sub>
-                                                    </p>
-                                                </div>
-                                                <div class="border-line-chart">
-                                                    <div class="parentContainer">
-
-
-                                                        <div>
-                                                            <canvas id="lineChartSharpThreeY"></canvas>
-                                                        </div>
-
-
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="d-flex flex-wrap justify-content-between align-items-end mb-3">
-                                                <div class="chart-desc">
-                                                    <span>Engagement Rates</span>
-                                                    <p class="m-0">
-                                                        <strong>5.2</strong>
-                                                        <sub class="color-success">
-                                                            <i class="la la-arrow-up"></i> 14%</sub>
-                                                    </p>
-                                                </div>
-                                                <div class="border-line-chart">
-                                                    <div class="parentContainer">
-
-
-                                                        <div>
-                                                            <canvas id="lineChartSharpFourY"></canvas>
-                                                        </div>
-
-
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="d-flex flex-wrap justify-content-between align-items-end">
-                                                <div class="chart-desc">
-                                                    <span>Retweets</span>
-                                                    <p class="m-0">
-                                                        <strong>8,625</strong>
-                                                        <sub class="color-danger">
-                                                            <i class="la la-arrow-down"></i> 14%</sub>
-                                                    </p>
-                                                </div>
-                                                <div class="border-line-chart">
-                                                    <div class="parentContainer">
-
-
-                                                        <div>
-                                                            <canvas id="lineChartSharpFiveY"></canvas>
-                                                        </div>
-
-
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    @endforeach
+                                @endif
                                 </div>
                                 <!-- ends: .card-body -->
                             </div>
-
                         </div>
-
-
-
                     </div>
-
             </div>
-
         </div>
 
     </main>

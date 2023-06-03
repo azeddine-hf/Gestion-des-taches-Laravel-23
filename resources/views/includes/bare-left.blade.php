@@ -101,6 +101,19 @@
 
                     </ul>
                 </li>
+                <li class="has-child ">
+                    <a href="{{url('export')}}" class="{{ Request::is('export')?'active':''}}">
+                        <span data-feather="download-cloud" class="nav-icon"></span>
+                        <span class="menu-text">Exporter les Tȃches</span>
+                        <span class="toggle-icon"></span>
+                    </a>
+                    <ul style="display: none; top: 220px; left: 67px;   ">
+                        <li>
+                            <a class="{{ Request::is('export')?'active':''}}" href="{{url('export')}}">Exporter les Tȃches</a>
+                        </li>
+
+                    </ul>
+                </li>
                 @endif
                 <li class="has-child ">
                     <a  class="{{ Request::is('chat')?'active':''}}" href="{{ url('chat') }}">

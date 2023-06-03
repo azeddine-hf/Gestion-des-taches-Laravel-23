@@ -19,7 +19,7 @@ class SuperAdminMiddleware
     {
         if (!Gate::allows('isSuperAdmin')) {
             // abort(403, 'Unauthorized');
-            return new Response(view('error403'), 403);
+            return new Response(view('errors.error403'), 403);
         }
         return $next($request);
     }

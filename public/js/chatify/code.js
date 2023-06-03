@@ -411,6 +411,8 @@ function IDinfo(id) {
         $(".messenger-infoView .info-name").text(data.fetch.nom +'  '+data.fetch.prenom);
         if (data.fetch.isAdmin == 1 || data.fetch.isAdmin == 2) {
         $("#isAdmin").text('Admin');
+        }else{
+        $("#isAdmin").text('Member');
         }
         $(".m-header-messaging .user-name").text(data.fetch.nom +' '+data.fetch.prenom);
         // Star status

@@ -15,22 +15,12 @@
             <a href="" class="sidebar-toggle">
                 <img class="svg" src="{{asset('import/img/svg/bars.svg')}}" alt="img"></a>
             <a class="navbar-brand" href="#"><img src="{{asset('import/img/logotech.png')}}" alt="img"></a>
-
+            
         </div>
         <!-- ends: navbar-left -->
-
         <div class="navbar-right">
             <ul class="navbar-right__menu">
-                <li class="nav-search d-none">
-                    <a href="#" class="search-toggle">
-                        <i class="la la-search"></i>
-                        <i class="la la-times"></i>
-                    </a>
-                    <form action="/" class="search-form-topMenu">
-                        <span class="search-icon" data-feather="search"></span>
-                        <input class="form-control mr-sm-2 box-shadow-none" type="text" placeholder="Search...">
-                    </form>
-                </li>
+                
                 <li class="nav-message">
                     <div class="dropdown-custom">
                         <a href="javascript:;" class="text-light" id="message_bell">
@@ -60,18 +50,8 @@
                                 <a href="{{url('mes-taches')}}" class="dropdown-wrapper__more">Voir toutes les tâches </a>
                             </div>
                         </div>
-                     </li>{{--
-                <li class="nav-notification">
-                    <div class="dropdown-custom">
-                        <a href="javascript:;" class="text-light" id="message_bell">
-                            <span data-feather="bell"></span>
-                        </a>
-                        <div class="dropdown-wrapper">
-                            <h2 class="dropdown-wrapper__title">Notifications <span class="badge-circle badge-success ml-1" id="notificationCount">0</span></h2>
-                            <ul class="notifications-list2" id="notificationList"></ul>
-                        </div>
-                    </div>
-                </li> --}}
+                     </li>
+                </li>
 
                 <!-- ends: .nav-notification -->
                 &nbsp;&nbsp;
@@ -101,7 +81,7 @@
                                     </li>
                                     <li>
                                         <a href="">
-                                            <span data-feather="settings"></span> Settings</a>
+                                            <span data-feather="settings"></span> Paramètres</a>
                                     </li>
                                     <li>
                                         <a href="{{url('chat')}}">
@@ -110,7 +90,7 @@
                                 </ul>
                                 <a href="javascript:void" class="nav-author__signout"
                                 onclick="$('#logout-form').submit();">
-                                    <span data-feather="log-out"></span> Sign Out</a>
+                                    <span data-feather="log-out"></span> Se déconnecter</a>
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                         @csrf
                                     </form>
@@ -120,6 +100,7 @@
                     </div>
                 </li>
                 <!-- ends: .nav-author -->
+                
             </ul>
             <!-- ends: .navbar-right__menu -->
             <div class="navbar-right__mobileAction d-md-none">

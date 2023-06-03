@@ -46,3 +46,50 @@
 
     <link rel="icon" type="image/png" sizes="16x16" href="{{asset('import/img/favicon.png')}}">
 
+    <style>
+        /* code of current date in home page */
+        time.icon
+        {
+        font-size: 1em; /* change icon size */
+        display: block;
+        position: relative;
+        width: 8em;
+        height: 8em;
+        background-color: #fff;
+        border-radius: 0.6em;
+        box-shadow: 0 1px 0 #bdbdbd, 0 2px 0 #fff, 0 3px 0 #bdbdbd, 0 4px 0 #fff, 0 5px 0 #bdbdbd, 0 0 0 1px #bdbdbd;
+        overflow: hidden;
+        }
+        time.icon *
+        {
+        display: block;
+        width: 100%;
+        font-size: 1em;
+        font-weight: bold;
+        font-style: normal;
+        text-align: center;
+        }
+        time.icon strong
+        {
+        position: absolute;
+        top: 0;
+        padding: 0.4em 0;
+        color: #fff;
+        background-color: #2863AD;
+        border-bottom: 1px dashed #163e6e;
+        box-shadow: 0 2px 0 #2863AD;
+        }
+        time.icon em
+        {
+        position: absolute;
+        bottom: 0.3em;
+        color: #2863AD;
+        }
+        time.icon span
+        {
+        font-size: 2.8em;
+        letter-spacing: -0.05em;
+        padding-top: 0.8em;
+        color: #1e60b1;
+        }
+    </style>

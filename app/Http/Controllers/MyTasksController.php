@@ -25,39 +25,26 @@ class MyTasksController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function showwaiting()
-    {
-        $user_id = Auth::id();
-        $tasks_waiting = Tasks::query()
-            ->select('tasks.id as idtsk', 'users.nom as nomuser', 'users.prenom as prenuser', 'projects.title as projname', 'tasks.desc_task as desctsk', 'tasks.status as etatsk', 'tasks.date_start as tskstart', 'tasks.date_end as tsksend', 'tasks.property as importsk')
-            ->where('tasks.is_delete', '=', '0')
-            ->where('tasks.id_user', $user_id)
-            ->where('tasks.status', '=', 'en cours')
-            ->join('users', 'tasks.id_user', '=', 'users.id')
-            ->join('projects', 'tasks.id_projet', '=', 'projects.id')
-            ->orderBy('tasks.date_start', 'asc')
-            ->get();
 
-        $tasks_with_days_remaining = [];
-        foreach ($tasks_waiting as $task) {
-            $start_date = Carbon::parse($task->tskstart);
-            $deadline = Carbon::parse($task->tsksend);
-            if ($deadline->isPast()) {
-                $days_remaining = $deadline->diffInDays(Carbon::now());
-                $days_remaining = ($days_remaining > '0') ? -$days_remaining :  (-1*$days_remaining);
-                $task->days_remaining = $days_remaining . ' jrs';
-            } else {
-                $days_remaining = $deadline->diffInDays($start_date);
-                $task->days_remaining = $days_remaining . ' jrs';
-            }
-            $tasks_with_days_remaining[] = $task;
-        }
+     public function showwaiting()
+     {
+         $user_id = Auth::id();
+         $tasks_waiting = Tasks::query()
+             ->select('tasks.id as idtsk', 'users.nom as nomuser', 'users.prenom as prenuser', 'projects.title as projname', 'tasks.desc_task as desctsk', 'tasks.status as etatsk', 'tasks.date_start as tskstart', 'tasks.date_end as tsksend', 'tasks.property as importsk','tasks.created_at as data_now')
+             ->where('tasks.is_delete', '=', '0')
+             ->where('tasks.id_user', $user_id)
+             ->where('tasks.status', '=', 'en cours')
+             ->join('users', 'tasks.id_user', '=', 'users.id')
+             ->join('projects', 'tasks.id_projet', '=', 'projects.id')
+             ->orderBy('tasks.created_at', 'desc')
+             ->get();
 
-        return response()->json([
-            'waiting_tasks' => $tasks_with_days_remaining,
-        ]);
+         return response()->json([
+             'tasks_waiting' => $tasks_waiting,
+         ]);
+     }
 
-    }
+
     public function showdones()
     {
 

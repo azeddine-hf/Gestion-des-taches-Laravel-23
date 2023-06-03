@@ -181,6 +181,9 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        //* export as pdf of excel
+        Maatwebsite\Excel\ExcelServiceProvider::class,
+        Barryvdh\DomPDF\ServiceProvider::class,
 
     ],
 

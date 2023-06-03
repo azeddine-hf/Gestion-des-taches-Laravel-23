@@ -21,7 +21,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- end col--> 
+                            <!-- end col-->
                             <div class="col-md-6 col-xl-4 mt-3">
                                 <div class="card" style="border-radius: 20px;">
                                     <div class="card-body">
@@ -35,7 +35,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- end col--> 
+                            <!-- end col-->
                             <div class="col-md-6 col-xl-4 mt-3">
                                 <div class="card" style="border-radius: 20px;">
                                     <div class="card-body">
@@ -49,8 +49,8 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- end col--> 
-                                                       
+                            <!-- end col-->
+
                 </div>
                     </div>
                 </div>
@@ -266,7 +266,7 @@
                 </div>
             </div>
             <!-- end Modal DELETE member -->
-            {{--* <!-- Modal ADD new member--> --}}
+            {{--? <!-- Modal ADD new member--> --}}
         <div class="modal fade new-member" id="new-member" role="dialog" tabindex="-1"
             aria-labelledby="staticBackdropLabel" aria-hidden="true"
             style="backdrop-filter: blur(8px);">
@@ -292,39 +292,62 @@
                                 <div class="form-row">
                                     <!--inputs-->
                                     <div class="form-group mb-20 col-md-6">
+                                        <label class="form-label text-light">Nom</label>
                                         <input type="text" name="nom" class="form-control"
                                             placeholder="Nom">
                                     </div>
                                     <div class="form-group mb-20 col-md-6">
+                                        <label class="form-label text-light">Prénom</label>
                                         <input type="text" name="prenom" class="form-control"
                                             placeholder="Prénom">
                                     </div>
                                     <div class="form-group mb-20 col-md-6">
+                                        <label class="form-label text-light">Téléphone</label>
                                         <input type="number" name="tel" class="form-control"
                                             placeholder="Téléphone" title="telephone">
                                     </div>
                                     <div class="form-group mb-20 col-md-6">
+                                        <label class="form-label text-light">Post</label>
                                         <input type="text" name="post" class="form-control"
                                             placeholder="Post">
                                     </div>
                                     <div class="form-group mb-20 col-md-6">
+                                        <label class="form-label text-light">Email</label>
                                         <input type="email" name="email" class="form-control"
                                             placeholder="Email">
                                     </div>
                                     <div class="form-group mb-20 col-md-6">
+                                        <label class="form-label text-light">Mot de pass</label>
                                         <input type="password" name="pass" class="form-control"
                                             placeholder="Mot de pass">
                                     </div>
                                     <!-- date picker-->
                                     <div class="col-md-12 mb-20">
+                                        <label class="form-label text-light">Date de naissance</label>
                                         <input class="form-control" type="text" name="dateness"
                                             placeholder="Date de naissance"
                                             onfocus="(this.type='date')"
                                             onblur="(this.type='text')">
                                     </div>
+                                    <div class="col-md-12 mb-20">
+                                        <label class="form-label text-light">Les compétences</label>
+                                        <div class="atbd-select-list">
+                                            <div class="atbd-select ">
+                                                <select  name="select-2" id="select-2" class="form-control">
+                                                    <option value="01">Option 1</option>
+                                                    <option value="02">Option 2</option>
+                                                    <option value="03">Option 3</option>
+                                                    <option value="04">Option 4</option>
+                                                    <option value="05">Option 5</option>
+                                                </select>
+
+                                            </div>
+                                        </div>
+                                    </div>
                                     <!-- ends  date picker-->
                                     <!--profile upload-->
                                     <div class="atbd-upload col-md-12">
+                                        <label class="form-label text-light">Photo de Profile</label>
                                         <div class="atbd-upload__button ">
                                             <a href="javascript:void(0)"
                                                 class="btn btn-lg btn-outline-lighten btn-upload w-100"

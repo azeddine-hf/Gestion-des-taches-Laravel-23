@@ -24,4 +24,18 @@
     :root {
         --primary-color: {{ $messengerColor }};
     }
+    .chip{
+	padding: 8px 10px;
+	border-radius: 10px;
+	font-weight: 600;
+	font-size: 12px;
+	box-shadow: 0 2px 5px rgba(0,0,0,.25);
+	margin: 0 10px;
+	
+	cursor: pointer;
+}
+.chip.info{
+	background: #5FD6D4;
+	color: whitesmoke;
+}
 </style>

@@ -20,7 +20,7 @@ class AdminMiddleware
     {
         if (!Gate::allows('isAdmin')) {
             // abort(403, 'Unauthorized');
-             return new Response(view('error403'), 403);
+             return new Response(view('errors.error403'), 403);
         }
 
 

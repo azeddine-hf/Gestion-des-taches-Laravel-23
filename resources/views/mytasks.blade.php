@@ -124,44 +124,67 @@ showTasksDone();
         }
     //*show waiting tasks
     showTasksWaiting();
-    function showTasksWaiting(){
+    function mayFuncToDate(dateString) {
+    var now = moment();
+    var date = moment(dateString);
+    var diff = now.diff(date, 'seconds');
+    var minutes = Math.floor(diff / 60);
+    var hours = Math.floor(minutes / 60);
+    var days = Math.floor(hours / 24);
+    var weeks = Math.floor(days / 7);
+
+    if (diff < 60) {
+        return "juste maintenant";
+    } else if (minutes < 60) {
+        return "il y a " + minutes + "m";
+    } else if (hours < 24) {
+        return "il y a " + hours + "h";
+    } else if (days < 7) {
+        return "il y a " + days + "jr";
+    } else {
+        return "il y a " + weeks + "sm";
+    }
+}
+
+function showTasksWaiting() {
     $.ajax({
         type: "GET",
         url: "/show_wait_tasks",
         dataType: "json",
         success: function(response) {
             $('#wait_tasks').html("");
-            $.each(response.waiting_tasks, function(key, items) {
-                let days_remaining = items.days_remaining < 0 ? -items.days_remaining : items.days_remaining;
-                let badge_color = days_remaining > '0' ? 'success' : 'danger';
-                let badge_text = days_remaining < '0' ? 'en retard' : 'en avance';
-                //code for badges importance
-                if (items.importsk === 'urgent') {
-                                badgeClass2 = 'atbd-tag tag-danger tag-transparented';
-                            }else if (items.importsk === 'normal') {
-                                badgeClass2 = 'atbd-tag tag-success tag-transparented';
-                            }else if (items.importsk === 'pas important') {
-                                badgeClass2 = 'atbd-tag tag-info tag-transparented';
-                            }
+            $.each(response.tasks_waiting, function(key, task) {
+                // Code for badges importance
+                var badgeClass2;
+                if (task.importsk === 'urgent') {
+                    badgeClass2 = 'atbd-tag tag-danger tag-transparented';
+                } else if (task.importsk === 'normal') {
+                    badgeClass2 = 'atbd-tag tag-success tag-transparented';
+                } else if (task.importsk === 'pas important') {
+                    badgeClass2 = 'atbd-tag tag-info tag-transparented';
+                }
+
+                var daterang = mayFuncToDate(task.data_now);
+
                 $('#wait_tasks').append(`
                     <tr class="todo-list ptl--hover draggable" draggable="true">
                         <td>
                             <div class="checkbox-group d-flex">
                                 <div class="checkbox-theme-default custom-checkbox checkbox-group__single d-flex">
-                                    <input class="checkbox check-waiting" type="checkbox" value="${items.idtsk}" id="check-grp-td${items.idtsk}" >
-                                    <label for="check-grp-td${items.idtsk}" class="fs-14 color-primary strikethrough">
-                                        ${items.desctsk}
-                                    </label>
+                                    <input class="checkbox check-waiting" type="checkbox" value="${task.idtsk}" id="check-grp-td${task.idtsk}">
+                                    <label for="check-grp-td${task.idtsk}" class="fs-14 color-primary strikethrough">
+                                        ${task.desctsk}
+                                    </label>&nbsp;
                                 </div>
-                            <span class="${badgeClass2}">${items.importsk}</span>
+                                <span class="text-danger fw-700">${task.tsksend ? ' Date limite !'+'&nbsp;<span class="badge badge-round badge-light text-white">'+task.tsksend+'</span>' : '<span class="badge badge-round badge-light text-white">N\'a pas de date limite</span>'}</span>
 
                             </div>
-
                         </td>
                         <td>
                             <div class="todo-list__right">
                                 <ul class="d-flex align-content-center justify-content-end">
-                                    <li><span class="atbd-tag tag-${badge_color} tag-transparented"">${days_remaining} ${badge_text}</span></li>
+                                    <li class="${badgeClass2}">${task.importsk}</li>
+                                    <li><span class="atbd-tag tag-primary tag-transparented">${daterang}</span></li>
                                     <li>
                                         <a href="#" class="plus">
                                             <span data-feather="move"></span>
@@ -172,11 +195,14 @@ showTasksDone();
                         </td>
                     </tr>
                 `);
+
             });
         }
-
     });
 }
+
+
+
 
         $(document).on('click', '.check-waiting', function() {
         if($('.check-waiting:checked').length > 0){

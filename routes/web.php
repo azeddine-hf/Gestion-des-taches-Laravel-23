@@ -4,10 +4,12 @@ use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ExportTasksController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\TasksController;
 use App\Http\Controllers\MyTasksController;
 use App\Http\Controllers\RecycleController;
+use App\Http\Controllers\ExportPageController;
 use App\Http\Controllers\NotificationController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth ;
@@ -27,14 +29,15 @@ use App\Http\Middleware\SuperAdminMiddleware;
 Route::group(['middleware' => ['auth']], function () {
 
     //* Routes accessible to all authenticated users
-
+    //!rout for export excel
+    Route::get('/tasks/export', [ExportTasksController::class, 'exportExcel'])->name('tasks.export');
     //! notification routes
     Route::get('/notifications/unseen-messages', [NotificationController::class, 'getUnseenMessages']);
     Route::get('/notifications/bell-messages', [NotificationController::class, 'getUnseenBell']);
     Route::get('/notifications/today-tasks', [NotificationController::class, 'todayTasks']);
     Route::get('/notifications/bell-notification', [NotificationController::class, 'getNotifBell']);
 
-    //! routs for My tasks
+    //! routs for My tasks show_waiting_tasks
     Route::get('/mes-taches', [MyTasksController::class, 'index']);
     Route::get('/show_wait_tasks', [MyTasksController::class, 'showwaiting'])->name('waiting_tasks');
     Route::get('/show_done_tasks', [MyTasksController::class, 'showdones'])->name('done_tasks');
@@ -48,6 +51,11 @@ Route::group(['middleware' => ['auth']], function () {
 
     //* Routes accessible only to admin and SuperAdmin
     Route::group(['middleware' => [AdminMiddleware::class]], function () {
+        //show Export Page 
+        Route::get('/export', [ExportPageController::class, 'index']);
+        Route::get('/export-tasks', [ExportPageController::class, 'exportTasks'])->name('export.tskuser');
+        Route::get('/tasks/user/{user_id}', [ExportPageController::class, 'showuser_table']);
+
         // show USERS route in table and all
         Route::get('/equipe', [UserController::class, 'index']);
         Route::get('/show_members', [UserController::class, 'showsmember'])->name('showmmp');
