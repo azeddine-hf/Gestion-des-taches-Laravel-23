@@ -1,6 +1,9 @@
 @extends('master', ['body_class' => 'layout-light side-menu overlayScroll'])
 @section('title', 'Equipe')
 @section('content')
+    <style>
+        
+    </style>
     <main class="main-content">
         <div class="contents expanded">
             <div class="container-fluid">
@@ -191,6 +194,10 @@
                                                 placeholder="Date de naissance" onfocus="(this.type='date')"
                                                 onblur="(this.type='text')">
                                         </div>
+                                        <div class="col-md-12 mb-20">
+                                            <label class="form-label text-light">Les compétences</label>
+                                            <input name="tags" class="form-control text-light" id="tagedit" placeholder="Appuyez sur 'ENTRER'! " autofocus>                                  
+                                        </div>
                                         <!-- ends  date picker-->
                                         <!--profile upload-->
                                         <div class="file-upload w-100">
@@ -331,18 +338,7 @@
                                     </div>
                                     <div class="col-md-12 mb-20">
                                         <label class="form-label text-light">Les compétences</label>
-                                        <div class="atbd-select-list">
-                                            <div class="atbd-select ">
-                                                <select  name="select-2" id="select-2" class="form-control">
-                                                    <option value="01">Option 1</option>
-                                                    <option value="02">Option 2</option>
-                                                    <option value="03">Option 3</option>
-                                                    <option value="04">Option 4</option>
-                                                    <option value="05">Option 5</option>
-                                                </select>
-
-                                            </div>
-                                        </div>
+                                        <input name="tags" class="form-control text-light" placeholder="Appuyez sur 'ENTRER'! " autofocus>                                  
                                     </div>
                                     <!-- ends  date picker-->
                                     <!--profile upload-->
@@ -555,6 +551,7 @@
                         $('#email1').val(response.user.email);
                         $('#pass2').val(response.password);
                         $('#date1').val(response.user.dateNaissance);
+                        $('#tagedit').val(response.user.skills);
                         $('#post1').val(response.user.jobTitle);
                         $('#tel1').val(response.user.telephone);
                         $("#showimg").html(`<img src="import/profileImg/${response.user.profile}" alt="" class="avatar avatar-light avatar-lg avatar-circle mt-2">`);
@@ -701,4 +698,25 @@ $('#chooseFile').bind('change', function () {
 });//ennd function ready
 
     </script>
+<script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify@4"></script>
+
+<script>
+    // Initialize Tagify on the skills input field
+    var inputs = document.querySelectorAll('input[name^="tags"]');
+var form = document.getElementById('form');
+
+inputs.forEach(function(input) {
+    new Tagify(input);
+
+    // Submit the form when pressing the Enter key
+    input.addEventListener('keydown', function(event) {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            form.submit();
+        }
+    });
+});
+
+</script>
+
 @endsection

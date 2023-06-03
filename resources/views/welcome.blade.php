@@ -45,7 +45,7 @@
                             <div class="card card-overview border-0">
                                 <div class="card-header">
                                     <h6>Tâches de la semaine</h6>
-                                    <div><a href="{{ route('tasks.export') }}" class="btn btn-primary">Export Tasks</a>
+                                    <div><a href="{{ route('tasks.export') }}" class="btn btn-success"><span data-feather="download"></span>Exporter mes tâches</a>
                                     </div>
                                 </div>
                                 <div class="card-body pt-0 pb-0">

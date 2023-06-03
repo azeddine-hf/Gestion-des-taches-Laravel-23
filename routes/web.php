@@ -108,7 +108,7 @@ Route::group(['middleware' => ['auth']], function () {
     //* accessible only for SuperAdmins
     Route::group(['middleware' => [SuperAdminMiddleware::class]], function () {
         // SuperAdmin routes
-        Route::get('/show_members_deleted', [UserController::class, 'showsmember_deleted'])->name('showmmp');
+        Route::get('/show_members_deleted', [UserController::class, 'showsmember_deleted']);
         Route::post('/restor-user/{id_recycle}', [UserController::class, 'destroy_recycle']);
         Route::delete('/delete-user-ever/{id_dele}', [UserController::class, 'destroy_ever']);
         Route::get('/recycle', [RecycleController::class, 'index']);

@@ -1,13 +1,7 @@
-<footer class="footer-wrapper">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-12">
-                <div class="footer-copyright text-center">
-                    <p>2022 © All Righy Reserved<a href="https://tech-digital.ma/" target="_blank">Tech Digital</a>
-                    </p>
+<footer class="footer bg-white h-100 pt-3 pb-3">
+            <div class="col-12 text-center">
+                <div class="footer-conten text-lightt">
+                    <span>2022 © All Rights Reserved <a href="https://tech-digital.ma/" target="_blank">Tech Digital</a></span>
                 </div>
-            </div>
-
-        </div>
-    </div>
+         </div>
 </footer>

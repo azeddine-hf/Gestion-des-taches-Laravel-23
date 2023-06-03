@@ -41,6 +41,7 @@
 
     <link rel="stylesheet" href="{{asset('import/assets/vendor_assets/css/style.css')}}">
     <link rel="stylesheet" href="{{asset('import/assets/vendor_assets/css/jquery-ui.css')}}">
+    <link href="https://unpkg.com/@yaireo/tagify/dist/tagify.css" rel="stylesheet" type="text/css" />
 
     <!-- endinject -->
 

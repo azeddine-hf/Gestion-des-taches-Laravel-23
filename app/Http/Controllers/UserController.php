@@ -52,6 +52,7 @@ class UserController extends Controller
             'pass' =>'required|max:60|min:6',
             'dateness' =>'required|date',
             'profile' =>'required|image|max:2048|mimes:png,jpg,jpeg',
+            'tags' =>'required',
         ]);
         if($isValid->fails()){
             return response()->json([
@@ -62,7 +63,16 @@ class UserController extends Controller
         else{
             $user = new User;
             $user->nom = $request->input('nom');
-            $user->prenom = $request->input('prenom');
+            $skillsJson = $request->tags;
+            $skillsArray = json_decode($skillsJson, true);
+            
+            $skillsString = '';
+            if (is_array($skillsArray) && !empty($skillsArray)) {
+                $skillsString = implode(',', array_column($skillsArray, 'value'));
+                $user->skills = $skillsString;  // Output: skill1,skill2
+            } else {
+                $user->skills = '';  // Set empty string if skills array is invalid or empty
+            }            $user->prenom = $request->input('prenom');
             $user->email = $request->input('email');
             $user->jobTitle = $request->input('post');
             $user->telephone = $request->input('tel');
@@ -150,68 +160,75 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {
-        $isValid = Validator::make($request->all(), [
-            'nom' =>'required|max:60|min:2',
-            'prenom' =>'required|max:60|min:2',
-            'tel' => [
-                'nullable',
-                'digits:10',
-                'regex:#^(?:(?:(?:\+|00)212[\s]?(?:[\s]?\(0\)[\s]?)?)|0){1}(?:7[\s.-]?[2-3]|6[\s.-]?[13-9]){1}[0-9]{1}(?:[\s.-]?\d{2}){3}$#'
-            ],
-            'post' =>'required|max:60|min:2',
-            'email' =>'required|email',
-            'dateness' =>'required|date',
+{
+    $isValid = Validator::make($request->all(), [
+        'nom' => 'required|max:60|min:2',
+        'prenom' => 'required|max:60|min:2',
+        'tel' => [
+            'nullable',
+            'digits:10',
+            'regex:#^(?:(?:(?:\+|00)212[\s]?(?:[\s]?\(0\)[\s]?)?)|0){1}(?:7[\s.-]?[2-3]|6[\s.-]?[13-9]){1}[0-9]{1}(?:[\s.-]?\d{2}){3}$#'
+        ],
+        'post' => 'required|max:60|min:2',
+        'email' => 'required|email',
+        'dateness' => 'required|date',
+        'tags' => 'required',
+    ]);
+
+    if ($isValid->fails()) {
+        return response()->json([
+            'status' => 400,
+            'errors' => $isValid->messages(),
         ]);
-        if($isValid->fails()){
+    } else {
+        $user = User::find($id);
+        if ($user) {
+            $skillsJson = $request->tags;
+            $skillsArray = json_decode($skillsJson, true);
+
+            $skillsString = '';
+            if (is_array($skillsArray) && !empty($skillsArray)) {
+                $skillsString = implode(',', array_column($skillsArray, 'value'));
+                $user->skills = $skillsString;  // Output: skill1,skill2
+            } else {
+                $user->skills = '';  // Set empty string if skills array is invalid or empty
+            }
+            $user->nom = $request->input('nom');
+            $user->prenom = $request->input('prenom');
+            $user->email = $request->input('email');
+            $user->jobTitle = $request->input('post');
+            $user->telephone = $request->input('tel');
+            $user->dateNaissance = $request->input('dateness');
+
+            if ($request->has('pass')) {
+                $user->password = Hash::make($request->input('pass'));
+            } else {
+                $user->password = Hash::make($user->password);
+            }
+
+            if ($request->hasFile('profile2')) {
+                $file = $request->file('profile2');
+                $extention = $file->getClientOriginalExtension();
+                $filename = time() . '.' . $extention;
+                $file->move('import/profileImg/', $filename);
+                $user->profile = $filename;
+            }
+
+            $user->save();
+
             return response()->json([
-                'status'=>400,
-                'errors'=>$isValid->messages(),
+                'status' => 200,
+                'message' => 'L\'utilisateur a été modifié avec succès !',
+            ]);
+        } else {
+            return response()->json([
+                'status' => 404,
+                'message' => 'L\'utilisateur non trouvé !',
             ]);
         }
-        else{
-            $user = User::find($id);
-            if($user)
-            {
-                $user->nom = $request->input('nom');
-                $user->prenom = $request->input('prenom');
-                $user->email = $request->input('email');
-                $user->jobTitle = $request->input('post');
-                $user->telephone = $request->input('tel');
-                $user->dateNaissance = $request->input('dateness');
-                    if($request->has('pass')) {
-                        $user->password = Hash::make($request->input('pass'));
-                    }else{
-                        $user->password = Hash::make($user->password);
-                    }
-                    if($request->hasFile('profile2')){
-                    //  $path = 'import/profileImg/'.$user->profile;
-                        // if(File::exists($path)){
-                        //     File::update($path);
-                        // }
-                    $file = $request->file('profile2');
-                    $extention = $file->getClientOriginalExtension();
-                    $filename = time().'.'.$extention;
-                    $file->move('import/profileImg/', $filename);
-                    $user->profile = $filename;
-                }
-                $user->save();
-                return response()->json([
-                    'status'=>200,
-                    'message'=>'L\'utilisateur a été modifié avec succés !'
-                ]);
-            }
-            else{
-                return response()->json([
-                    'status'=>404,
-                    'message'=>'L\'utilisateur non trouvé !'
-                ]);
-            }
+    }
+}
 
-
-    }//end else isinvalid
-
-       }
 
     /**
      * Remove the specified resource from storage.

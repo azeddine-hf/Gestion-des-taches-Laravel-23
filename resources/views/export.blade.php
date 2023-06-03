@@ -17,11 +17,10 @@
                                                 <label for="select-search">Choisi Un Member :</label>
                                                 <div class="atbd-select-list">
                                                     <div class="atbd-select ">
-                                                        </select>  <select name="user_id" id="select-search" class="form-control text-capitaliz">
+                                                       <select name="user_id" id="select-search" class="form-control text-capitalize">
                                                             <option selected disabled>Choisi Un Member</option>
                                                             @foreach ($users as $user)
                                                                 <option value="{{ $user->id }}" class="text-capitalize">
-                                                                    <a href="#" class="profile-image rounded-circle d-inline-block m-0 wh-38" style="background-image:url('/import/profileImg/{{$user->profile}}'); background-size: cover;"></a>
                                                                     {{ $user->nom.' '.$user->prenom }}
                                                                 </option>
                                                             @endforeach
@@ -45,7 +44,7 @@
                                             
                                             <div class="form-group mb-20 col-md-12">
                                                 <button type="submit" class="btn btn-primary btn-default btn-rounded btn-transparent-success  w-100">
-                                                    <span data-feather="download"></span>Exporter Les Taches</button>
+                                                    <span data-feather="download"></span>Exporter Les Tȃches</button>
                                                 <button type="reset" class="d-none"></button>
                                             </div>
                                         </div>
@@ -65,7 +64,11 @@
                                                     </th>
                                                 </tr>
                                             </thead>
-                                            <tbody></tbody>
+                                            <tbody>
+                                                <tr>
+                                                    <td colspan="3" class="text-center text-light">Choisi un member!</td>
+                                                </tr>
+                                            </tbody>
                                         </table>
                                     </div>
                         </div>
@@ -125,7 +128,7 @@
                         tableBody.append(row);
                     });
                 } else {
-                    tableBody.append($('<tr>').append($('<td colspan="3">').text('Please choose a user.')));
+                    tableBody.append($('<tr>').append($('<td colspan="3" class="text-center text-light">').text('Aucune tâche')));
                 }
                 div1.append(div);
             },

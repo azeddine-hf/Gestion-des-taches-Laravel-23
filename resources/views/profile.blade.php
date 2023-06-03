@@ -89,37 +89,7 @@
                                         </ul>
                                     </div>
                                 </div>
-                                <div class="db-social border-bottom">
-                                    <div class="card-header border-bottom-0 pt-sm-25 pb-sm-0  px-md-25 px-3">
-                                        <div class="profile-header-title">
-                                            Social Profiles
-                                        </div>
-                                    </div>
-                                    <div class="card-body pt-md-1 pt-0">
-                                        <ul class="db-social-parent mb-0">
-                                            <li class="db-social-parent__item">
-                                                <a class="color-facebook hover-facebook wh-44 fs-22" href="#">
-                                                    <i class="lab la-facebook-f"></i>
-                                                </a>
-                                            </li>
-                                            <li class="db-social-parent__item">
-                                                <a class="color-twitter hover-twitter wh-44 fs-22" href="#">
-                                                    <i class="lab la-twitter"></i>
-                                                </a>
-                                            </li>
-                                            <li class="db-social-parent__item">
-                                                <a class="color-ruby hover-ruby  wh-44 fs-22" href="#">
-                                                    <i class="las la-basketball-ball"></i>
-                                                </a>
-                                            </li>
-                                            <li class="db-social-parent__item">
-                                                <a class="color-instagram hover-instagram wh-44 fs-22" href="#">
-                                                    <i class="lab la-instagram"></i>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
+                                
                             </div>
                             <!-- Profile User Bio End -->
                         </aside>
