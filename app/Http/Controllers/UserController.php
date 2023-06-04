@@ -65,7 +65,7 @@ class UserController extends Controller
             $user->nom = $request->input('nom');
             $skillsJson = $request->tags;
             $skillsArray = json_decode($skillsJson, true);
-            
+
             $skillsString = '';
             if (is_array($skillsArray) && !empty($skillsArray)) {
                 $skillsString = implode(',', array_column($skillsArray, 'value'));
@@ -167,7 +167,7 @@ class UserController extends Controller
         'tel' => [
             'nullable',
             'digits:10',
-            'regex:#^(?:(?:(?:\+|00)212[\s]?(?:[\s]?\(0\)[\s]?)?)|0){1}(?:7[\s.-]?[2-3]|6[\s.-]?[13-9]){1}[0-9]{1}(?:[\s.-]?\d{2}){3}$#'
+            'regex:#^(?:(?:(?:\+|00)212\s?)|0)(?:5|6|7)\d{8}$'
         ],
         'post' => 'required|max:60|min:2',
         'email' => 'required|email',

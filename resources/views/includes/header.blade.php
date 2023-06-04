@@ -58,13 +58,13 @@
                 <h6 class="text-capitalize">{{Auth::user()->nom .' '. Auth::user()->prenom }} </h6>
                 <li class="nav-author">
                     <div class="dropdown-custom">
-                        <a href="#"
+                        <a href="{{url('profile')}}"
                             class="profile-image rounded-circle d-block m-0 wh-40"
                             style="background-image:url('{{ asset('/import/profileImg/'.Auth::user()->profile) }}'); background-size: cover;"></a>
                         <div class="dropdown-wrapper">
                             <div class="nav-author__info">
                                 <div class="author-img">
-                                    <a href="#"
+                                    <a href="{{url('profile')}}"
                                         class="profile-image rounded-circle d-block m-0 wh-50"
                                         style="background-image:url('{{ asset('/import/profileImg/'.Auth::user()->profile) }}'); background-size: cover;"></a>
                                 </div>
@@ -80,12 +80,12 @@
                                             <span data-feather="user"></span> Profile</a>
                                     </li>
                                     <li>
-                                        <a href="">
-                                            <span data-feather="settings"></span> Paramètres</a>
+                                        <a href="{{url('mes-taches')}}">
+                                            <span data-feather="check-circle"></span> Mes Tâches</a>
                                     </li>
                                     <li>
                                         <a href="{{url('chat')}}">
-                                            <span data-feather="message-circle"></span> Contactez Admin</a>
+                                            <span data-feather="message-circle"></span> Chat En-ligne</a>
                                     </li>
                                 </ul>
                                 <a href="javascript:void" class="nav-author__signout"

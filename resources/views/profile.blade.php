@@ -49,47 +49,39 @@
                                     </div>
                                     <div class="card-body pt-md-1 pt-0">
                                         <div class="user-content-info">
-                                            <div class="text-white badge badge-round badge-info" style="font-size: 18px;">
+                                            <div class="text-white badge badge-round badge-primary" style="font-size: 18px;">
                                                 <i class="las la-envelope p-right-10" style="font-size: 18px;"></i>
                                                 {{ Auth::user()->email }}
                                             </div><br>
                                                 @if (Auth::user()->telephone!=Null)
-                                            <div class="text-white badge badge-round badge-info " style="font-size: 18px;">
+                                            <div class="text-white badge badge-round badge-primary " style="font-size: 18px;">
                                                 <i class="las la-phone p-right-10" style="font-size: 18px;"></i>
                                                 <span class="p-right-10">{{ Auth::user()->telephone }}</span>
                                             </div>
                                                 @endif
-                                           
+
                                         </div>
                                     </div>
                                 </div>
                                 <div class="user-skils border-bottom">
                                     <div class="card-header border-bottom-0 pt-sm-25 pb-sm-0  px-md-25 px-3">
                                         <div class="profile-header-title">
-                                            Skills
+                                            Les compétences
                                         </div>
                                     </div>
                                     <div class="card-body pt-md-1 pt-0">
-                                        <ul class="user-skils-parent">
-                                            <li class="user-skils-parent__item">
-                                                <a href="#">UI/UX</a>
-                                            </li>
-                                            <li class="user-skils-parent__item">
-                                                <a href="#">Branding</a>
-                                            </li>
-                                            <li class="user-skils-parent__item">
-                                                <a href="#">product design</a>
-                                            </li>
-                                            <li class="user-skils-parent__item">
-                                                <a href="#">Application</a>
-                                            </li>
-                                            <li class="user-skils-parent__item mb-0">
-                                                <a href="#">web design</a>
-                                            </li>
-                                        </ul>
+                                            <div class="card-body pt-0">
+                                                @php
+                                                    $skills = explode(',', auth()->user()->skills);
+                                                @endphp
+                                                    @foreach ($skills as $skill)
+                                                        <span class="atbd-tag tag-transparented tag-success">{{ $skill }}</span>
+                                                    @endforeach
+
+                                            </div>
                                     </div>
                                 </div>
-                                
+
                             </div>
                             <!-- Profile User Bio End -->
                         </aside>
@@ -165,18 +157,14 @@
                                                                             $iconip = "";
                                                                             if ($data->etatsk == 'en cours') {
                                                                                 $badge = "badge badge-round text-white badge-warning badge-lg";
-                                                                            } else if ($data->etatsk == 'terminé') {
-                                                                                $badge = "badge badge-round badge-success badge-lg";
-                                                                            } else if ($data->etatsk == 'pas commencé') {
-                                                                                $badge = "badge badge-round badge-primary badge-lg";
-                                                                            }else if ($data->etatsk == 'annulé') {
-                                                                                $badge = "badge badge-round badge-secondary text-white badge-lg";
                                                                             }
                                                                             if($data->importsk =='urgent'){
                                                                                 $badge2 = "badge badge-round badge-danger text-white badge-lg";
                                                                                 $iconip = "las la-exclamation-triangle";
                                                                             }else if($data->importsk =='normal'){
                                                                                 $badge2 = "badge badge-red badge-round badge-light badge-lg badge-outlined";
+                                                                            }else {
+                                                                                $badge2 = "badge badge-round badge-info badge-lg";
                                                                             }
                                                                         @endphp
                                                                         <tr>

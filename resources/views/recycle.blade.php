@@ -1,5 +1,5 @@
 @extends('master', ['body_class' => 'layout-light side-menu overlayScroll'])
-@section('title', 'Equipe')
+@section('title', 'Corbeille')
 @section('content')
     <main class="main-content">
         <div class="contents expanded">

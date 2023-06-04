@@ -1,5 +1,5 @@
 @extends('master', ['body_class' => 'layout-light side-menu overlayScroll'])
-@section('title', 'Mon Profile')
+@section('title', 'Exporter Les Tâches')
 @section('content')
 <main class="main-content">
     <div class="contents expanded">
@@ -114,20 +114,27 @@
                 var div = $('<tr>');
                 var hasTasks = tasks.length > 0;
                 if (hasTasks) {
-                    $.each(tasks, function(index, task) {
-                        if (index === 0) {
-                            div.append($('<td>').html(`<a href="#" class="profile-image rounded-circle d-inline-block m-0 wh-38" style="background-image:url('/import/profileImg/${task.profile}'); background-size: cover;"></a>`));
-                            div.append($('<td class="text-capitalize">').text(task.nom + ' ' + task.prenom));
-                            div.append($('<td>').text(task.email));
-                            div.append($('<td>').text(task.jobTitle));
-                        }
-                        var row = $('<tr>');
-                        row.append($('<td>').text(task.desc_task));
-                        row.append($('<td>').text(task.status));
-                        row.append($('<td>').text(task.property));
-                        tableBody.append(row);
-                    });
-                } else {
+                        $.each(tasks, function(index, task) {
+                            if (index === 0) {
+                                div.append($('<td>').html(`<a href="#" class="profile-image rounded-circle d-inline-block m-0 wh-38" style="background-image:url('/import/profileImg/${task.profile}'); background-size: cover;"></a>`));
+                                div.append($('<td class="text-capitalize">').text(task.nom + ' ' + task.prenom));
+                                div.append($('<td>').text(task.email));
+                                div.append($('<td>').text(task.jobTitle));
+                                }
+                                var row = $('<tr>');
+                                row.append($('<td>').text(task.desc_task));
+                                
+                                // Add class to task.status based on its value
+                                var statusClass = task.status === 'en cours' ? 'badge-warning' : 'badge-success';
+                                row.append($('<td>').html(`<span class="badge rounded-pill ${statusClass}">${task.status}</span>`));
+                                
+                                // Add class to task.property based on its value
+                                var propertyClass = task.property === 'urgent' ? 'badge-danger' : 'badge-primary';
+                                row.append($('<td>').html(`<span class="badge rounded-pill ${propertyClass}">${task.property}</span>`));
+                                
+                                tableBody.append(row);
+                            });
+                }else {
                     tableBody.append($('<tr>').append($('<td colspan="3" class="text-center text-light">').text('Aucune tâche')));
                 }
                 div1.append(div);

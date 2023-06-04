@@ -44,7 +44,7 @@ class ClientController extends Controller
             'tel_c' => [
                 'nullable',
                 'digits:10',
-                'regex:#^(?:(?:(?:\+|00)212[\s]?(?:[\s]?\(0\)[\s]?)?)|0){1}(?:7[\s.-]?[2-3]|6[\s.-]?[13-9]){1}[0-9]{1}(?:[\s.-]?\d{2}){3}$#'
+                'regex:#^(?:(?:(?:\+|00)212\s?)|0)(?:5|6|7)\d{8}$#'
             ],
             'email_c' =>'required|email',
             'logo' =>'required|image|max:2048|mimes:png,jpg,jpeg',

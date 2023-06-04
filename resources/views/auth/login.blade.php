@@ -47,7 +47,7 @@
                                                         <div class="position-relative">
                                                             <input id="password" type="password"
                                                                 class="form-control @error('password') is-invalid @enderror"
-                                                                name="password" required
+                                                                name="password" placeholder="Mot de passe" required
                                                                 autocomplete="current-password">
                                                             @error('password')
                                                             <span class="invalid-feedback" role="alert">
@@ -65,11 +65,11 @@
                                                                 {{ __('Souviens-toi de moi') }}
                                                             </label>
                                                         </div>
-                                                        @if (Route::has('password.request'))
+                                                        {{-- @if (Route::has('password.request'))
                                                         <a class="btn btn-link" href="{{ route('password.request') }}">
                                                             {{ __('Mot de passe oublié?') }}
                                                         </a>
-                                                        @endif
+                                                        @endif --}}
                                                     </div>
                                                     <div class="button-group d-flex pt-1 justify-content-md-start justify-content-center">
                                                         <button type="submit" class="btn btn-primary btn-default btn-squared mr-15 text-capitalize lh-normal px-50 py-15 signIn-createBtn">

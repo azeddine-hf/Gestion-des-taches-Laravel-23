@@ -20,7 +20,7 @@
                                     </div>
                                     <div class="card-body">
                                         @if($tasksCount === 0)
-                                            <span style="font-size: 15px" class="badge badge-light rounded-pill pl-2 pr-2 text-white">Les tâches d'aujourd'hui n'ont pas été ajoutées</span>
+                                            <span style="font-size: 14px" class="badge badge-light rounded-pill pl-2 pr-2 text-white">Les tâches d'aujourd'hui n'ont pas été ajoutées</span>
                                         @elseif($tasksCount === 1)
                                             <p>Vous avez <b class="text-white badge badge-warning">une</b> tâche aujourd'hui.</p>
                                         @else
@@ -399,8 +399,7 @@
                             </div>
 
                         </div>
-                        <div class="col-8 mailbox-lis">
-
+                        <div class="col-xxl-8 col-md-8 mailbox-lis">
                             <div class="card">
                                 <div class="card-header">
                                     <h6>Messages de l'administrateur</h6>

@@ -40,6 +40,7 @@ class ProfileController extends Controller
         //todo les projets
         $project = Project::where('isDeleted', '=', '0')
                            ->select('title as nomproj','startDate as firstdate', 'status as statut')
+                           ->where('status','en cours')
                            ->orderBy('startDate', 'asc') // Order by date_start column in ascending order
                            ->get();
         return view('profile',
