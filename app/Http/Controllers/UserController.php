@@ -102,8 +102,16 @@ class UserController extends Controller
      */
     public function showsmember()
     {
-        $user = User::where('is_deleted', '=', '0')
-            ->get(['id as idu', 'nom as nameu', 'prenom as lastnam', 'email as mail', 'jobTitle as poost', 'telephone as teel', 'profile as imgu', 'dateNaissance as daten']);
+        $user='';
+        if(Auth()->user()->isAdmin==2){
+            $user = User::where('is_deleted', '=', '0')
+                        ->get(['id as idu', 'nom as nameu', 'prenom as lastnam', 'email as mail', 'jobTitle as poost', 'telephone as teel', 'profile as imgu', 'dateNaissance as daten']);
+        }else if(Auth()->user()->isAdmin==1){
+            $user = User::where('is_deleted', '=', '0')
+                        ->where('isAdmin','=',0)
+                        ->get(['id as idu', 'nom as nameu', 'prenom as lastnam', 'email as mail', 'jobTitle as poost', 'telephone as teel', 'profile as imgu', 'dateNaissance as daten']);
+        }
+
             $userCount = User::where('is_deleted', 0)->count();
             $admins = User::where('is_deleted', 0)
                                ->where('isAdmin', 1)

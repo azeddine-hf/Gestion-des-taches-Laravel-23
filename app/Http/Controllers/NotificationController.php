@@ -66,10 +66,11 @@ class NotificationController extends Controller
         $tasks = Tasks::select('id_user', 'property', 'created_at')
             ->whereDate('created_at', $today)
             ->where('id_user', $loggedInUserId)
+            ->where('status','en cours')
             ->get();
 
         return response()->json($tasks);
-        
+
     }
     public function getNotifBell(Request $request)
     {
@@ -78,6 +79,7 @@ class NotificationController extends Controller
 
     $tasksCount = Tasks::where('created_at', '>=', $today)
         ->where('id_user', $loggedInUserId)
+        ->where('status','en cours')
         ->count();
     return response()->json($tasksCount);
     }

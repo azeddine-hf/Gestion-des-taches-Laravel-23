@@ -349,7 +349,6 @@
         </span>
     </div>
     <div class="overlay-dark-sidebar show"></div>
-
 @endsection
 <script src="{{ asset('import/assets/vendor_assets/js/paginaseach.js')}}"></script>
 @section('script')

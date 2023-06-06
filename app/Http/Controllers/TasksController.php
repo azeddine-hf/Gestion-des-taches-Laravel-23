@@ -17,8 +17,16 @@ class TasksController extends Controller
      */
     public function index()
     {
-        $users = User::where('is_deleted', '=', '0')
-        ->get(['id as idcli', 'nom as nameuser', 'prenom as lnameusr']);
+        $users='';
+        if(Auth()->user()->isAdmin==2){
+            $users = User::where('is_deleted', '=', '0')
+            ->get(['id as idcli', 'nom as nameuser', 'prenom as lnameusr']);
+        }else if(Auth()->user()->isAdmin==1){
+            $users = User::where('is_deleted', '=', '0')
+            ->where('isAdmin','=',0)
+            ->get(['id as idcli', 'nom as nameuser', 'prenom as lnameusr']);
+        }
+
         $tasks = Project::where('isDeleted', '=', '0')
         ->get(['id as idpro', 'title as nompro']);
         return view('tasks',['users'=>$users,'project'=>$tasks]);
@@ -83,12 +91,26 @@ class TasksController extends Controller
      */
     public function showtasks()
     {
-        $tasks = Tasks::where('is_delete', '=', '0')
+        $tasks='';
+        if(Auth()->user()->isAdmin==2)
+        {
+           $tasks = Tasks::where('is_delete', '=', '0')
         ->join('users', 'tasks.id_user', '=', 'users.id')
         ->join('projects', 'tasks.id_projet', '=', 'projects.id')
         ->select('tasks.id as idtsk', 'users.nom as nomuser','users.prenom as prenuser', 'projects.title as projname', 'projects.title as pname', 'tasks.desc_task as desctsk', 'tasks.status as etatsk', 'tasks.date_start as tskstart', 'tasks.date_end as tsksend', 'tasks.property as importsk')
+
         ->orderBy('tasks.date_start', 'asc') // Order by date_start column in ascending order
         ->get();
+        }else if(Auth()->user()->isAdmin==1){
+            $tasks = Tasks::where('is_delete', '=', '0')
+            ->join('users', 'tasks.id_user', '=', 'users.id')
+            ->join('projects', 'tasks.id_projet', '=', 'projects.id')
+            ->select('tasks.id as idtsk', 'users.nom as nomuser','users.prenom as prenuser', 'projects.title as projname', 'projects.title as pname', 'tasks.desc_task as desctsk', 'tasks.status as etatsk', 'tasks.date_start as tskstart', 'tasks.date_end as tsksend', 'tasks.property as importsk')
+            ->where('users.isAdmin','=',0)
+            ->orderBy('tasks.date_start', 'asc') // Order by date_start column in ascending order
+            ->get();
+        }
+
         $taskCountimport = Tasks::where('is_delete', 0)
                             ->where('property', 'urgent')
                             ->count();

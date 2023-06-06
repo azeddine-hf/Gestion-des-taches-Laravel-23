@@ -12,7 +12,14 @@ use App\Exports\TasksExportfiltred;
     {
         public function index()
         {
-            $users = User::all();
+            $users='';
+            if(Auth()->user()->isAdmin==2){
+                $users = User::all();
+            }else if(Auth()->user()->isAdmin==1){
+                $users = User::where('isAdmin','=',0)
+                              ->get();
+            }
+
             return view('export',compact('users'));
         }
         public function showuser_table(Request $request, $user_id)
