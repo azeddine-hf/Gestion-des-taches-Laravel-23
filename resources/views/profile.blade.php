@@ -150,8 +150,9 @@
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
-                                                                    @foreach ($mes_taches as $data)
-                                                                        @php
+
+                                                                    @forelse ($mes_taches as $data)
+                                                                    @php
                                                                             $badge = "";
                                                                             $badge2 = "";
                                                                             $iconip = "";
@@ -167,24 +168,30 @@
                                                                                 $badge2 = "badge badge-round badge-info badge-lg";
                                                                             }
                                                                         @endphp
-                                                                        <tr>
-                                                                            <td><span class="dessc">{{ $data->desctsk }}</span></td>
-                                                                            <td><span class="{{ $badge }}">{{ $data->etatsk }}</span></td>
-                                                                            <td><span class="{{$badge2 }}">{{ $data->importsk.' ' }}
-                                                                                    <i class="{{$iconip}}"></i>
-                                                                                    <div class="badge-dot-wrap">
-                                                                                        <span class="badge-dot dot-success"></span>
-                                                                                    </div>
-                                                                                </span>
-                                                                            </td>
-                                                                            <td class="text-center">@if ($data->tsksend)
-                                                                                <span>{{ $data->tsksend }}</span>
-                                                                                @else
-                                                                                    <span> - </span>
-                                                                                @endif
-                                                                            </td>
-                                                                        </tr>
-                                                                    @endforeach
+                                                                    <tr>
+                                                                        <td><span class="dessc">{{ $data->desctsk }}</span></td>
+                                                                        <td><span class="{{ $badge }}">{{ $data->etatsk }}</span></td>
+                                                                        <td><span class="{{$badge2 }}">{{ $data->importsk.' ' }}
+                                                                                <i class="{{$iconip}}"></i>
+                                                                                <div class="badge-dot-wrap">
+                                                                                    <span class="badge-dot dot-success"></span>
+                                                                                </div>
+                                                                            </span>
+                                                                        </td>
+                                                                        <td class="text-center">@if ($data->tsksend)
+                                                                            <span>{{ $data->tsksend }}</span>
+                                                                            @else
+                                                                                <span> - </span>
+                                                                            @endif
+                                                                        </td>
+                                                                    </tr>
+                                                                @empty
+                                                                    <!-- Message when there are no rows -->
+                                                                    <tr>
+                                                                        <td colspan="4" class="text-center">Vous n'avez pas de tâche en cours  </td>
+                                                                    </tr>
+                                                                @endforelse
+
 
                                                             </tbody>
                                                             </table>
